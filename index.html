@@ -107,6 +107,7 @@ button:disabled{opacity:.55;cursor:not-allowed;filter:none}
 }
 
 .project-toolbar{display:flex;align-items:center;justify-content:space-between;gap:14px;flex-wrap:wrap;margin:20px 0 14px;padding:18px 20px;border:1px solid var(--border);border-radius:16px;background:linear-gradient(110deg,#171222,#0e0d16)}.project-toolbar .actions{margin:0}.project-toolbar p{margin:0;color:var(--muted);font-size:13px;line-height:1.5}.stats{margin-bottom:26px}.stats .stat{background:linear-gradient(145deg,#15111f,#0e0d15)}@media(max-width:560px){.project-toolbar{align-items:flex-start;padding:15px}.project-toolbar .actions{width:100%}.project-toolbar .actions button{flex:1}}
+.project-filters{display:grid;grid-template-columns:repeat(3,minmax(0,1fr)) auto;align-items:end;gap:10px;margin:14px 0 8px;padding:14px;border:1px solid var(--border);border-radius:14px;background:#0d0c14}.project-filters label{display:grid;gap:6px;color:var(--muted);font-size:12px}.project-filters select{width:100%;min-width:0;background:#15111f;border:1px solid var(--border);border-radius:9px;padding:10px;color:var(--text);font:inherit;font-size:12px}.project-filters button{padding:10px 12px;white-space:nowrap}.project-results{margin:8px 2px 14px;color:var(--muted);font-size:12px}@media(max-width:650px){.project-filters{grid-template-columns:repeat(2,minmax(0,1fr))}.project-filters button{grid-column:1/-1}.project-filters label{min-width:0}}
 </style>
 </head>
 <body>
@@ -128,6 +129,13 @@ button:disabled{opacity:.55;cursor:not-allowed;filter:none}
 <section class="tab-page" data-tab-page="projects">
 <section class="tab-heading" data-tab-heading="projects"><span class="tag">РАБОЧЕЕ ПРОСТРАНСТВО / 02</span><h1>Твои <span>проекты</span></h1><p>Организуй задачи, планируй этапы и отслеживай прогресс.</p></section>
 <div class="project-toolbar"><div class="actions"><button class="primary" id="createBtn">＋ Создать проект</button><button id="demoBtn">Загрузить демо-проекты</button></div><p>Управляй своими идеями и следи за прогрессом.</p></div>
+<div class="project-filters" aria-label="Фильтры проектов">
+<label>Статус<select id="projectStatusFilter"><option value="all">Все проекты</option><option value="active">В работе</option><option value="done">Завершённые</option><option value="overdue">Просроченные</option></select></label>
+<label>Приоритет<select id="projectPriorityFilter"><option value="all">Любой приоритет</option><option value="high">Высокий</option><option value="medium">Средний</option><option value="low">Низкий</option></select></label>
+<label>Сортировка<select id="projectSort"><option value="updated">По названию</option><option value="due">По сроку</option><option value="priority">По приоритету</option><option value="progress">По прогрессу</option></select></label>
+<button type="button" id="resetProjectFilters">Сбросить</button>
+</div>
+<p class="project-results" id="projectResults" aria-live="polite"></p>
 <div class="stats">
 <div class="stat"><strong id="projectCount">0</strong><small>Проектов</small></div>
 <div class="stat"><strong id="taskCount">0</strong><small>Всего задач</small></div>
@@ -204,12 +212,33 @@ $("modalCancel").onclick=()=>{$("modalBackdrop").classList.remove("open");$("mod
 
 function render(){
 $("projectCount").textContent=projects.length;
-$("taskCount").textContent=projects.reduce((sum,p)=>sum+p.tasks.length,0);
-$("doneCount").textContent=projects.reduce((sum,p)=>sum+p.tasks.filter(t=>t.done).length,0);
-if(!projects.length){$("projects").innerHTML='<div class="empty">Пока здесь пусто.<br>Создай первый проект и начни свою историю.</div>';return}
+$("taskCount").textContent=projects.reduce((sum,p)=>sum+(Array.isArray(p.tasks)?p.tasks.length:0),0);
+$("doneCount").textContent=projects.reduce((sum,p)=>sum+(Array.isArray(p.tasks)?p.tasks.filter(t=>t.done).length:0),0);
+if(!projects.length){$("projectResults").textContent="";$("projects").innerHTML='<div class="empty">Пока здесь пусто.<br>Создай первый проект и начни свою историю.</div>';return}
 const query=($("searchInput")?.value||"").trim().toLowerCase();
-const visible=projects.filter(p=>[p.name,p.description,p.category].join(" ").toLowerCase().includes(query));
-if(!visible.length){$("projects").innerHTML='<div class="empty">Ничего не найдено. Попробуй другой запрос.</div>';return}
+const status=$("projectStatusFilter")?.value||"all";
+const priorityFilter=$("projectPriorityFilter")?.value||"all";
+const sort=$("projectSort")?.value||"updated";
+const today=new Date().toISOString().slice(0,10);
+const progressOf=p=>{const tasks=Array.isArray(p.tasks)?p.tasks:[];return tasks.length?Math.round(tasks.filter(t=>t.done).length/tasks.length*100):0};
+const priorityRank={high:0,medium:1,low:2};
+let visible=projects.filter(p=>{
+const tasks=Array.isArray(p.tasks)?p.tasks:[];
+const progress=progressOf(p);
+const overdue=Boolean(p.dueDate&&p.dueDate<today&&progress<100);
+const isDone=tasks.length>0&&progress===100;
+return [p.name,p.description,p.category].join(" ").toLowerCase().includes(query)
+&&(priorityFilter==="all"||(p.priority||"medium")===priorityFilter)
+&&(status==="all"||(status==="done"&&isDone)||(status==="active"&&!isDone)||(status==="overdue"&&overdue));
+});
+visible.sort((a,b)=>{
+if(sort==="due"){const ad=a.dueDate||"9999-12-31",bd=b.dueDate||"9999-12-31";return ad.localeCompare(bd)||a.name.localeCompare(b.name,"ru")}
+if(sort==="priority")return (priorityRank[a.priority||"medium"]??1)-(priorityRank[b.priority||"medium"]??1)||a.name.localeCompare(b.name,"ru");
+if(sort==="progress")return progressOf(b)-progressOf(a)||a.name.localeCompare(b.name,"ru");
+return a.name.localeCompare(b.name,"ru");
+});
+$("projectResults").textContent="Показано проектов: "+visible.length+" из "+projects.length;
+if(!visible.length){$("projects").innerHTML='<div class="empty">По этим условиям ничего не найдено. Измени фильтры или сбрось их.</div>';return}
 $("projects").innerHTML=visible.map(p=>{const done=p.tasks.filter(t=>t.done).length;const percent=p.tasks.length?Math.round(done/p.tasks.length*100):0;const priority=p.priority||"medium";const priorityLabel={high:"Высокий приоритет",medium:"Средний приоритет",low:"Низкий приоритет"}[priority]||"Средний приоритет";const due=p.dueDate?new Date(p.dueDate+"T12:00:00").toLocaleDateString("ru-RU",{day:"numeric",month:"short",year:"numeric"}):"Срок не задан";const overdue=p.dueDate&&p.dueDate<new Date().toISOString().slice(0,10)&&percent<100;const tasks=p.tasks.length?p.tasks.slice(0,3).map(t=>`<div class="task-row ${t.done?"done":""}"><button data-action="toggle" data-id="${p.id}" data-task="${t.id}" aria-label="Изменить статус задачи">${t.done?"✓":"○"}</button><span class="task-name">${escapeHTML(t.title)}</span></div>`).join(""):'<small>Задач пока нет — добавь первую.</small>';const phases=Array.isArray(p.roadmap)?p.roadmap:[];const relations=Array.isArray(p.relations)?p.relations:[];const contributions=Array.isArray(p.contributions)?p.contributions:[];const relationRows=relations.map((r,i)=>{const target=projects.find(x=>x.id===r.targetId);return `<div class="task-row"><span class="task-name">${escapeHTML(r.type||"Связан с")}: ${escapeHTML(target?target.name:(r.targetName||"Недоступный проект"))}</span><button class="danger" data-action="relation-remove" data-id="${p.id}" data-relation="${i}" aria-label="Удалить связь">×</button></div>`}).join("");return `<article class="project priority-border-${priority}"><div class="project-top"><span class="pill">${escapeHTML(p.category)}</span><span class="project-state ${percent===100&&p.tasks.length?"state-done":"state-active"}">${percent===100&&p.tasks.length?"✓ Завершён":"● В работе"}</span></div><h3>${escapeHTML(p.name)}</h3><div class="project-quickmeta"><span>${done}/${p.tasks.length} задач</span><span>${phases.filter(x=>x.done).length}/${phases.length} этапов</span></div><p>${escapeHTML(p.description||"Автор пока не добавил описание.")}</p><div class="meta-row"><span class="meta-chip ${priority==="high"?"priority-high":priority==="medium"?"priority-medium":""}">${priorityLabel}</span><span class="meta-chip">${overdue?"Просрочен срок · ":""}${due}</span></div><div class="progress-track" role="progressbar" aria-valuenow="${percent}" aria-valuemin="0" aria-valuemax="100" aria-label="Прогресс проекта"><div class="progress-fill" style="width:${percent}%"></div></div><div class="progress-label"><span>Прогресс</span><strong>${percent}%</strong></div><div class="task-list">${tasks}${p.tasks.length>3?'<small>И ещё '+(p.tasks.length-3)+' задач…</small>':""}</div><div class="roadmap"><strong>Этапы проекта · ${phases.filter(x=>x.done).length}/${phases.length}</strong>${phases.slice(0,4).map(x=>`<div class="roadmap-item ${x.done?"done":""}"><button data-action="phase-toggle" data-id="${p.id}" data-phase="${x.id}" aria-label="Изменить статус этапа">${x.done?"✓":"○"}</button><div><h4>${escapeHTML(x.title)}</h4><p>${escapeHTML(x.description||"Этап проекта")}</p><span class="phase-status">${x.done?"ЗАВЕРШЁН":"В РАБОТЕ"}</span></div></div>`).join("")}${phases.length>4?'<small>Ещё '+(phases.length-4)+' этап(ов)</small>':""}</div><div class="roadmap-add"><button data-action="phase-add" data-id="${p.id}">＋ Этап</button><button data-action="phase-edit" data-id="${p.id}">Настроить этапы</button></div><div class="roadmap"><strong>Связи проекта · ${relations.length}</strong>${relationRows||'<small>Пока нет связанных проектов.</small>'}</div><div class="meta-row"><span class="meta-chip">Вкладов: ${contributions.length}</span></div><div class="project-buttons"><button data-action="page" data-id="${p.id}">◉ Страница проекта</button><button data-action="contribution" data-id="${p.id}">＋ Записать вклад</button></div><div class="project-buttons"><button data-action="relation-add" data-id="${p.id}">↔ Связать</button><button data-action="fork" data-id="${p.id}">⑂ Создать ответвление</button></div><div class="project-buttons"><button data-action="task" data-id="${p.id}">＋ Задача</button><button data-action="edit" data-id="${p.id}">Настроить</button><button class="danger" data-action="delete" data-id="${p.id}">Удалить</button></div></article>`}).join("")
 }
 function logActivity(message){
@@ -307,6 +336,8 @@ projects.push(...fresh);
 if(!save())return false;render();$("notice").textContent="Демо-проекты добавлены."
 });
 $("searchInput").addEventListener("input",render);
+["projectStatusFilter","projectPriorityFilter","projectSort"].forEach(id=>$(id).addEventListener("change",render));
+$("resetProjectFilters").addEventListener("click",()=>{$("projectStatusFilter").value="all";$("projectPriorityFilter").value="all";$("projectSort").value="updated";$("searchInput").value="";render()});
 $("modalFields").addEventListener("click",event=>{const button=event.target.closest("button[data-project-page-action=\"contribution\"]");if(button){$("modalBackdrop").classList.remove("open");$("modalSubmit").style.display="";$("modalCancel").textContent="Отмена";addContribution(button.dataset.id)}});
 $("projects").addEventListener("click",event=>{const button=event.target.closest("button[data-action]");if(!button)return;const project=projects.find(p=>p.id===button.dataset.id);if(button.dataset.action==="page")openProjectPage(button.dataset.id);if(button.dataset.action==="contribution")addContribution(button.dataset.id);if(button.dataset.action==="task")addTask(button.dataset.id);if(button.dataset.action==="edit")editProject(button.dataset.id);if(button.dataset.action==="relation-add")addProjectRelation(button.dataset.id);if(button.dataset.action==="fork")forkProject(button.dataset.id);if(button.dataset.action==="relation-remove")removeProjectRelation(button.dataset.id,Number(button.dataset.relation));if(button.dataset.action==="phase-add")addPhase(button.dataset.id);if(button.dataset.action==="phase-edit")editPhases(button.dataset.id);if(button.dataset.action==="phase-toggle"&&project){const phase=(project.roadmap||[]).find(x=>x.id===button.dataset.phase);if(phase){phase.done=!phase.done;if(!save())return false;render();logActivity((phase.done?"Завершён этап: ":"Этап снова в работе: ")+phase.title);$("notice").textContent="Этап обновлён."}}if(button.dataset.action==="toggle"&&project){const task=project.tasks.find(t=>t.id===button.dataset.task);if(task){task.done=!task.done;if(!save())return false;render();logActivity((task.done?"Выполнена задача: ":"Задача возвращена в работу: ")+task.title);$("notice").textContent="Статус задачи обновлён."}}if(button.dataset.action==="delete"&&project)askDelete("Удалить проект?","Проект «"+project.name+"» и его задачи будут удалены.",()=>{const removedId=project.id;projects=projects.filter(p=>p.id!==removedId);projects.forEach(p=>{p.relations=(p.relations||[]).filter(r=>r.targetId!==removedId);if(p.parentProjectId===removedId)delete p.parentProjectId});if(!save())return false;render();renderProfile();logActivity("Удалён проект: "+project.name);$("notice").textContent="Проект удалён."});});
 
