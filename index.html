@@ -139,7 +139,7 @@ function renderActivity(){
 if(!activity.length){$("activityList").innerHTML='<div class="empty">История пока пуста. Создай проект, задачу или команду.</div>';return}
 $("activityList").innerHTML=activity.map(item=>{const d=new Date(item.time);const date=Number.isNaN(d.getTime())?"":d.toLocaleString("ru-RU",{day:"2-digit",month:"short",hour:"2-digit",minute:"2-digit"});return `<div class="activity-item"><span class="activity-dot"></span><div class="activity-text">${escapeHTML(item.message)}<span class="activity-time">${escapeHTML(date)}</span></div></div>`}).join("");
 }
-$("clearActivityBtn").addEventListener("click",()=>{if(!activity.length)return;askDelete("Очистить историю?","Все записи активности в этом браузере будут удалены.",()=>{const previous=activity;activity=[];if(!writeLocalData(ACTIVITY_KEY,activity,"историю активности")){activity=previous;renderActivity();return}renderActivity();$("notice").textContent="История очищена."})});
+$("clearActivityBtn").addEventListener("click",()=>{if(!activity.length)return;askDelete("Очистить историю?","Все записи активности в этом браузере будут удалены.",()=>{const previous=activity;activity=[];if(!writeLocalData(ACTIVITY_KEY,activity,"историю активности")){activity=previous;renderActivity();renderProfile();return false}renderActivity();renderProfile();$("notice").textContent="История очищена.";return true})});
 function renderProfile(){
 const name=profile?.displayName||"Новый участник";
 const initials=name.trim().split(" ").slice(0,2).map(part=>part[0]||"").join("").toUpperCase()||"K";
