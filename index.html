@@ -111,23 +111,38 @@ button:disabled{opacity:.55;cursor:not-allowed;filter:none}
 <body>
 <header><div class="logo">KORRI <span>ONE</span></div><div class="status">● ПРОТОТИП</div></header>
 <nav class="navbar" aria-label="Главное меню"><a href="#home">Главная</a><a href="#projectsSection">Проекты</a><a href="#teamsSection">Команды</a><a href="#activitySection">Активность</a><a href="#profileSection">Профиль</a></nav>
-<main id="home">
+<main id="appMain">
+<section class="tab-page" id="home" data-tab-page="home">
 <section class="hero-panel" aria-labelledby="heroTitle"><div class="hero-copy"><div class="tag"><span class="hero-pulse"></span> ТВОЯ ИДЕЯ. ТВОЙ МИР.</div>
 <h1 id="heroTitle">Создавай больше.<br><span>Меняй правила.</span></h1>
 <p class="subtitle">Пространство, где идеи становятся проектами, люди объединяются в команды, а каждый шаг приближает к результату.</p>
 <div class="actions"><button class="primary" id="createBtn">＋ Создать проект</button><button id="demoBtn">Загрузить демо-проекты</button></div><div class="hero-foot"><span><i></i> Личное рабочее пространство</span><span>Идеи → Проекты → Результат</span></div></div><div class="hero-orbit" aria-hidden="true"><div class="orbit orbit-one"></div><div class="orbit orbit-two"></div><div class="orbit-core"><span>K</span><small>ONE</small></div><span class="orbit-node node-one">IDEA</span><span class="orbit-node node-two">BUILD</span><span class="orbit-node node-three">GROW</span></div></section>
-<section class="tab-heading" data-tab-heading="profile"><span class="tag">РАБОЧЕЕ ПРОСТРАНСТВО / 05</span><h1>Твой <span>профиль</span></h1><p>Твоя история, вклад и достижения в KORRI ONE.</p></section>
-<section class="panel profile-panel" id="profileSection"><div class="panel-head"><h2>Профиль участника</h2><button id="profileBtn" class="primary">✎ Настроить</button></div><div class="profile-hero"><div class="profile-avatar" id="profileAvatar">K</div><div class="profile-identity"><div class="tag">УЧАСТНИК KORRI ONE</div><h2 id="profileDisplayName">Новый участник</h2><p id="profileHandle">@korri_user</p><p class="profile-line" id="profileSummary">Создай профиль и начни собирать свою историю.</p></div></div><div class="profile-details" id="profileDetails"></div><div class="profile-stats" id="profileStats"></div><div class="profile-subhead"><h3>🏆 Достижения</h3><span class="public-muted">Открываются за реальные действия в прототипе</span></div><div class="achievement-grid" id="profileAchievements"></div><div class="profile-subhead"><h3>⚡ Последние достижения и вклад</h3></div><div id="profileHighlights" class="contribution-list"></div><p class="profile-note">Профиль и достижения пока хранятся только в этом браузере. Они не являются публичными и не синхронизируются между устройствами.</p></section><div class="stats">
+<div class="stats">
 <div class="stat"><strong id="projectCount">0</strong><small>Проектов</small></div>
 <div class="stat"><strong id="taskCount">0</strong><small>Всего задач</small></div>
 <div class="stat"><strong id="doneCount">0</strong><small>Выполнено</small></div>
 </div>
+
+</section>
+<section class="tab-page" data-tab-page="profile">
+<section class="tab-heading" data-tab-heading="profile"><span class="tag">РАБОЧЕЕ ПРОСТРАНСТВО / 05</span><h1>Твой <span>профиль</span></h1><p>Твоя история, вклад и достижения в KORRI ONE.</p></section>
+<section class="panel profile-panel" id="profileSection"><div class="panel-head"><h2>Профиль участника</h2><button id="profileBtn" class="primary">✎ Настроить</button></div><div class="profile-hero"><div class="profile-avatar" id="profileAvatar">K</div><div class="profile-identity"><div class="tag">УЧАСТНИК KORRI ONE</div><h2 id="profileDisplayName">Новый участник</h2><p id="profileHandle">@korri_user</p><p class="profile-line" id="profileSummary">Создай профиль и начни собирать свою историю.</p></div></div><div class="profile-details" id="profileDetails"></div><div class="profile-stats" id="profileStats"></div><div class="profile-subhead"><h3>🏆 Достижения</h3><span class="public-muted">Открываются за реальные действия в прототипе</span></div><div class="achievement-grid" id="profileAchievements"></div><div class="profile-subhead"><h3>⚡ Последние достижения и вклад</h3></div><div id="profileHighlights" class="contribution-list"></div><p class="profile-note">Профиль и достижения пока хранятся только в этом браузере. Они не являются публичными и не синхронизируются между устройствами.</p></section>
+</section>
+<section class="tab-page" data-tab-page="projects">
 <section class="tab-heading" data-tab-heading="projects"><span class="tag">РАБОЧЕЕ ПРОСТРАНСТВО / 02</span><h1>Твои <span>проекты</span></h1><p>Организуй задачи, планируй этапы и отслеживай прогресс.</p></section>
 <div class="section-title" id="projectsSection"><h2>Твои проекты</h2><span class="tag">МОЯ ВСЕЛЕННАЯ</span><input class="search" id="searchInput" type="search" placeholder="Поиск по проектам…" aria-label="Поиск по проектам"></div>
-<div class="projects" id="projects"></div><section class="tab-heading" data-tab-heading="teams"><span class="tag">РАБОЧЕЕ ПРОСТРАНСТВО / 03</span><h1>Твои <span>команды</span></h1><p>Собирай людей вокруг общих идей и распределяй роли.</p></section>
-<section class="panel" id="teamsSection"><div class="panel-head"><h2>Команды</h2><button id="createTeamBtn" class="primary">＋ Создать команду</button></div><p class="profile-line">Объединяй людей вокруг общей идеи. Сейчас команды работают в демо-режиме на этом устройстве.</p><div class="teams" id="teams"></div></section><section class="tab-heading" data-tab-heading="activity"><span class="tag">РАБОЧЕЕ ПРОСТРАНСТВО / 04</span><h1>Журнал <span>активности</span></h1><p>Следи за изменениями и последними действиями.</p></section>
-<section class="panel" id="activitySection"><div class="panel-head"><h2>История активности</h2><button id="clearActivityBtn">Очистить историю</button></div><p class="profile-line">Здесь отображаются последние действия в этом браузере.</p><div class="activity-list" id="activityList"></div></section><div id="notice" role="status"></div><div class="modal-backdrop" id="modalBackdrop"><section class="modal" role="dialog" aria-modal="true" aria-labelledby="modalTitle"><h2 id="modalTitle"></h2><p class="modal-desc" id="modalDesc"></p><form id="modalForm"><div id="modalFields"></div><div class="modal-actions"><button type="button" id="modalCancel">Отмена</button><button class="primary" type="submit" id="modalSubmit">Сохранить</button></div></form></section></div>
-</main>
+<div class="projects" id="projects"></div>
+</section>
+<section class="tab-page" data-tab-page="teams">
+<section class="tab-heading" data-tab-heading="teams"><span class="tag">РАБОЧЕЕ ПРОСТРАНСТВО / 03</span><h1>Твои <span>команды</span></h1><p>Собирай людей вокруг общих идей и распределяй роли.</p></section>
+<section class="panel" id="teamsSection"><div class="panel-head"><h2>Команды</h2><button id="createTeamBtn" class="primary">＋ Создать команду</button></div><p class="profile-line">Объединяй людей вокруг общей идеи. Сейчас команды работают в демо-режиме на этом устройстве.</p><div class="teams" id="teams"></div></section>
+</section>
+<section class="tab-page" data-tab-page="activity">
+<section class="tab-heading" data-tab-heading="activity"><span class="tag">РАБОЧЕЕ ПРОСТРАНСТВО / 04</span><h1>Журнал <span>активности</span></h1><p>Следи за изменениями и последними действиями.</p></section>
+<section class="panel" id="activitySection"><div class="panel-head"><h2>История активности</h2><button id="clearActivityBtn">Очистить историю</button></div><p class="profile-line">Здесь отображаются последние действия в этом браузере.</p><div class="activity-list" id="activityList"></div></section>
+</section>
+<div id="notice" role="status"></div><div class="modal-backdrop" id="modalBackdrop"><section class="modal" role="dialog" aria-modal="true" aria-labelledby="modalTitle"><h2 id="modalTitle"></h2><p class="modal-desc" id="modalDesc"></p><form id="modalForm"><div id="modalFields"></div><div class="modal-actions"><button type="button" id="modalCancel">Отмена</button><button class="primary" type="submit" id="modalSubmit">Сохранить</button></div></form></section></div>
+</main></main>
 <footer>KORRI ONE © 2026 · Создано для больших идей</footer>
 <script>
 const KEY="korri-one-projects-v1";
@@ -292,36 +307,19 @@ $("searchInput").addEventListener("input",render);
 $("modalFields").addEventListener("click",event=>{const button=event.target.closest("button[data-project-page-action=\"contribution\"]");if(button){$("modalBackdrop").classList.remove("open");$("modalSubmit").style.display="";$("modalCancel").textContent="Отмена";addContribution(button.dataset.id)}});
 $("projects").addEventListener("click",event=>{const button=event.target.closest("button[data-action]");if(!button)return;const project=projects.find(p=>p.id===button.dataset.id);if(button.dataset.action==="page")openProjectPage(button.dataset.id);if(button.dataset.action==="contribution")addContribution(button.dataset.id);if(button.dataset.action==="task")addTask(button.dataset.id);if(button.dataset.action==="edit")editProject(button.dataset.id);if(button.dataset.action==="relation-add")addProjectRelation(button.dataset.id);if(button.dataset.action==="fork")forkProject(button.dataset.id);if(button.dataset.action==="relation-remove")removeProjectRelation(button.dataset.id,Number(button.dataset.relation));if(button.dataset.action==="phase-add")addPhase(button.dataset.id);if(button.dataset.action==="phase-edit")editPhases(button.dataset.id);if(button.dataset.action==="phase-toggle"&&project){const phase=(project.roadmap||[]).find(x=>x.id===button.dataset.phase);if(phase){phase.done=!phase.done;if(!save())return false;render();logActivity((phase.done?"Завершён этап: ":"Этап снова в работе: ")+phase.title);$("notice").textContent="Этап обновлён."}}if(button.dataset.action==="toggle"&&project){const task=project.tasks.find(t=>t.id===button.dataset.task);if(task){task.done=!task.done;if(!save())return false;render();logActivity((task.done?"Выполнена задача: ":"Задача возвращена в работу: ")+task.title);$("notice").textContent="Статус задачи обновлён."}}if(button.dataset.action==="delete"&&project)askDelete("Удалить проект?","Проект «"+project.name+"» и его задачи будут удалены.",()=>{const removedId=project.id;projects=projects.filter(p=>p.id!==removedId);projects.forEach(p=>{p.relations=(p.relations||[]).filter(r=>r.targetId!==removedId);if(p.parentProjectId===removedId)delete p.parentProjectId});if(!save())return false;render();renderProfile();logActivity("Удалён проект: "+project.name);$("notice").textContent="Проект удалён."});});
 
-// Вкладки приложения: показываем только выбранный раздел.
-const tabSections={
-  home:[document.querySelector("#home .hero-panel"),document.querySelector("#home .stats")],
-  projects:[document.querySelector('[data-tab-heading="projects"]'),$("#projectsSection"),$("#projects")],
-  teams:[document.querySelector('[data-tab-heading="teams"]'),$("#teamsSection")],
-  activity:[document.querySelector('[data-tab-heading="activity"]'),$("#activitySection")],
-  profile:[document.querySelector('[data-tab-heading="profile"]'),$("#profileSection")]
-};
-// Каждая вкладка становится отдельной страницей. Все элементы внутри неё
-// получают общий контейнерный маркер и скрываются вместе с неактивной вкладкой.
-const tabPageContainers={};
-Object.entries(tabSections).forEach(([tab,elements])=>{
-  const container=document.createElement("div");
-  container.className="tab-page";
-  container.dataset.tabPage=tab;
-  const first=elements.find(element=>element);
-  if(first&&first.parentNode){
-    first.parentNode.insertBefore(container,first);
-    elements.forEach(element=>{if(element&&element.parentNode)container.appendChild(element);});
-  }
-  tabPageContainers[tab]=container;
-});
+// Пять независимых страниц приложения. Контент уже разделён в HTML.
+const tabPageContainers=Object.fromEntries(
+  [...document.querySelectorAll("[data-tab-page]")].map(container=>[container.dataset.tabPage,container])
+);
 function activateTab(name,scroll=true){
-  if(!tabSections[name])name="home";
+  if(!tabPageContainers[name])name="home";
   Object.entries(tabPageContainers).forEach(([tab,container])=>{
-    if(container)container.hidden=tab!==name;
+    container.hidden=tab!==name;
   });
+  const hrefs={home:"#home",projects:"#projectsSection",teams:"#teamsSection",activity:"#activitySection",profile:"#profileSection"};
   document.querySelectorAll(".navbar a").forEach(link=>{
-    const active=link.getAttribute("href")==="#"+({home:"home",projects:"projectsSection",teams:"teamsSection",activity:"activitySection",profile:"profileSection"}[name]);
-    if(active)link.setAttribute("aria-current","page");else link.removeAttribute("aria-current");
+    if(link.getAttribute("href")===hrefs[name])link.setAttribute("aria-current","page");
+    else link.removeAttribute("aria-current");
   });
   document.body.dataset.activeTab=name;
   if(scroll)window.scrollTo({top:0,behavior:matchMedia("(prefers-reduced-motion: reduce)").matches?"auto":"smooth"});
