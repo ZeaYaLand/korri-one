@@ -96,8 +96,11 @@ project.tasks[index].done=!project.tasks[index].done;save();render();$("notice")
 }
 $("createBtn").addEventListener("click",createProject);
 $("demoBtn").addEventListener("click",()=>{
-if(projects.some(p=>p.id==="demo-one")){$("notice").textContent="Демо-проекты уже добавлены.";return}
-projects.push({id:"demo-one",name:"Korri Studio",description:"Пространство для творческих идей и новых проектов.",category:"Творчество",tasks:[{id:"d1",title:"Продумать концепцию",done:true},{id:"d2",title:"Собрать команду",done:false}]},{id:"demo-two",name:"Next Level",description:"План развития идеи от первого шага до результата.",category:"Развитие",tasks:[{id:"d3",title:"Составить дорожную карту",done:false}]});
+const demos=[{id:"demo-one",name:"Korri Studio",description:"Пространство для творческих идей и новых проектов.",category:"Творчество",tasks:[{id:"d1",title:"Продумать концепцию",done:true},{id:"d2",title:"Собрать команду",done:false}]},{id:"demo-two",name:"Next Level",description:"План развития идеи от первого шага до результата.",category:"Развитие",tasks:[{id:"d3",title:"Составить дорожную карту",done:false}]}];
+const existing=new Set(projects.map(p=>p.id));
+const fresh=demos.filter(p=>!existing.has(p.id));
+if(!fresh.length){$("notice").textContent="Демо-проекты уже добавлены.";return}
+projects.push(...fresh);
 save();render();$("notice").textContent="Демо-проекты добавлены."
 });
 $("searchInput").addEventListener("input",render);
