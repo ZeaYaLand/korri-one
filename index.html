@@ -73,10 +73,27 @@ try{projects=JSON.parse(localStorage.getItem(KEY)||"[]");if(!Array.isArray(proje
 try{teams=JSON.parse(localStorage.getItem(TEAM_KEY)||"[]");if(!Array.isArray(teams))teams=[]}catch{teams=[]}
 try{profile=JSON.parse(localStorage.getItem(PROFILE_KEY)||"null")}catch{profile=null}
 try{activity=JSON.parse(localStorage.getItem(ACTIVITY_KEY)||"[]");if(!Array.isArray(activity))activity=[]}catch{activity=[]}
-// Normalize locally stored records so older or partially damaged browser data does not break rendering.
-projects=projects.filter(p=>p&&typeof p==="object").map(p=>({...p,id:String(p.id||Date.now().toString()+Math.random().toString(16).slice(2)),name:String(p.name||"Без названия"),description:String(p.description||""),category:String(p.category||"Мой проект"),tasks:Array.isArray(p.tasks)?p.tasks.filter(t=>t&&typeof t==="object").map(t=>({...t,id:String(t.id||Date.now().toString()+Math.random().toString(16).slice(2)),title:String(t.title||"Без названия"),done:Boolean(t.done)})):[],roadmap:Array.isArray(p.roadmap)?p.roadmap.filter(x=>x&&typeof x==="object").map(x=>({...x,id:String(x.id||Date.now().toString()+Math.random().toString(16).slice(2)),title:String(x.title||"Без названия"),description:String(x.description||""),done:Boolean(x.done)})):[],relations:Array.isArray(p.relations)?p.relations.filter(r=>r&&typeof r==="object"):[],contributions:Array.isArray(p.contributions)?p.contributions.filter(x=>x&&typeof x==="object"):[]}));
-teams=teams.filter(t=>t&&typeof t==="object").map(t=>({...t,id:String(t.id||Date.now().toString()+Math.random().toString(16).slice(2)),name:String(t.name||"Без названия"),members:Array.isArray(t.members)?t.members.filter(m=>(m&&typeof m==="object")||typeof m==="string"):[]}));
-activity=activity.filter(a=>a&&typeof a==="object").map(a=>({...a,message:String(a.message||""),time:String(a.time||"")}));
+// Normalize locally stored records so stale or malformed browser data cannot break the app.
+const makeId=()=>Date.now().toString()+Math.random().toString(16).slice(2);
+const safeText=(value,fallback="",limit=500)=>String(value??fallback).slice(0,limit);
+const safeDone=value=>value===true||value===1||value==="true";
+projects=projects.filter(p=>p&&typeof p==="object"&&!Array.isArray(p)).map(p=>({
+...p,
+id:safeText(p.id||makeId()),
+name:safeText(p.name,"Без названия",80)||"Без названия",
+description:safeText(p.description,"",300),
+category:safeText(p.category,"Мой проект",30)||"Мой проект",
+priority:["low","medium","high"].includes(p.priority)?p.priority:"medium",
+dueDate:typeof p.dueDate==="string"&&/^\d{4}-\d{2}-\d{2}$/.test(p.dueDate)?p.dueDate:"",
+tasks:Array.isArray(p.tasks)?p.tasks.filter(t=>t&&typeof t==="object"&&!Array.isArray(t)).map(t=>({...t,id:safeText(t.id||makeId()),title:safeText(t.title,"Без названия",120)||"Без названия",done:safeDone(t.done)})):[],
+roadmap:Array.isArray(p.roadmap)?p.roadmap.filter(x=>x&&typeof x==="object"&&!Array.isArray(x)).map(x=>({...x,id:safeText(x.id||makeId()),title:safeText(x.title,"Без названия",80)||"Без названия",description:safeText(x.description,"",180),done:safeDone(x.done)})):[],
+relations:Array.isArray(p.relations)?p.relations.filter(r=>r&&typeof r==="object"&&!Array.isArray(r)).map(r=>({targetId:safeText(r.targetId),targetName:safeText(r.targetName,"Недоступный проект",80),type:["Связан с","Зависит от","Ответвление от"].includes(r.type)?r.type:"Связан с"})):[],
+contributions:Array.isArray(p.contributions)?p.contributions.filter(x=>x&&typeof x==="object"&&!Array.isArray(x)).map(x=>({...x,title:safeText(x.title,"Вклад",120),person:safeText(x.person,"Участник",60),description:safeText(x.description,"",300),date:safeText(x.date,"")})):[]
+}));
+teams=teams.filter(t=>t&&typeof t==="object"&&!Array.isArray(t)).map(t=>({...t,id:safeText(t.id||makeId()),name:safeText(t.name,"Без названия",60)||"Без названия",description:safeText(t.description,"",240),members:Array.isArray(t.members)?t.members.filter(m=>(m&&typeof m==="object"&&!Array.isArray(m))||typeof m==="string").map(m=>typeof m==="string"?{name:safeText(m,"Участник",60),role:"member"}:{name:safeText(m.name,"Участник",60),role:["owner","admin","member","viewer"].includes(m.role)?m.role:"member"}):[]}));
+if(!profile||typeof profile!=="object"||Array.isArray(profile))profile=null;
+else profile={displayName:safeText(profile.displayName,"",50),username:safeText(profile.username,"",30).replace(/^@/,""),title:safeText(profile.title,"",60),interests:safeText(profile.interests,"",100),bio:safeText(profile.bio,"",180)};
+activity=activity.filter(a=>a&&typeof a==="object"&&!Array.isArray(a)).map(a=>({id:safeText(a.id||makeId()),message:safeText(a.message,"",180),time:safeText(a.time,"")}));
 function writeLocalData(key,value,label){try{localStorage.setItem(key,JSON.stringify(value));return true}catch{$("notice").textContent="Не удалось сохранить "+label+". Возможно, в браузере закончилась память или хранилище недоступно. Изменения могут не сохраниться после закрытия страницы.";return false}}
 function save(){const previous=localStorage.getItem(KEY);if(writeLocalData(KEY,projects,"проекты"))return true;try{projects=JSON.parse(previous||"[]");if(!Array.isArray(projects))projects=[]}catch{projects=[]}return false}
 function saveTeams(){const previous=localStorage.getItem(TEAM_KEY);if(writeLocalData(TEAM_KEY,teams,"команды"))return true;try{teams=JSON.parse(previous||"[]");if(!Array.isArray(teams))teams=[]}catch{teams=[]}return false}
