@@ -300,10 +300,14 @@ const tabSections={
   activity:[document.querySelector('[data-tab-heading="activity"]'),$("#activitySection")],
   profile:[document.querySelector('[data-tab-heading="profile"]'),$("#profileSection")]
 };
+// Register every section explicitly, then hide all non-active panels in one pass.
+Object.entries(tabSections).forEach(([tab,elements])=>elements.forEach(element=>{
+  if(element)element.dataset.tabPanel=tab;
+}));
 function activateTab(name,scroll=true){
   if(!tabSections[name])name="home";
-  Object.entries(tabSections).forEach(([key,elements])=>{
-    elements.forEach(element=>{if(element)element.classList.toggle("tab-hidden",key!==name)});
+  document.querySelectorAll("[data-tab-panel]").forEach(element=>{
+    element.classList.toggle("tab-hidden",element.dataset.tabPanel!==name);
   });
   document.querySelectorAll(".navbar a").forEach(link=>{
     const active=link.getAttribute("href")==="#"+({home:"home",projects:"projectsSection",teams:"teamsSection",activity:"activitySection",profile:"profileSection"}[name]);
