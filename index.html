@@ -93,6 +93,19 @@ button:disabled{opacity:.55;cursor:not-allowed;filter:none}
 #projectsSection{scroll-margin-top:85px}#teamsSection,#activitySection,#profileSection{scroll-margin-top:80px}
 @media(max-width:650px){.hero-panel{grid-template-columns:minmax(0,1fr);padding:23px 18px;gap:0;border-radius:18px}.hero-copy h1{font-size:clamp(32px,9vw,48px)}.hero-orbit{min-height:190px;margin-top:4px}.orbit-one{width:170px;height:170px}.orbit-two{width:130px;height:130px}.orbit-core{width:82px;height:82px;border-radius:24px}.orbit-core span{font-size:32px}.node-one{top:8px}.node-three{bottom:8px}.node-two{right:calc(50% - 120px)}.hero-foot{font-size:10px}}
 @media(prefers-reduced-motion:no-preference){.hero-pulse{animation:heroGlow 2.6s ease-in-out infinite alternate}@keyframes heroGlow{from{opacity:.65;box-shadow:0 0 5px #a855f7}to{opacity:1;box-shadow:0 0 16px #c084fc}}}
+
+/* Clear page headers for each app tab */
+.tab-heading{margin:8px 0 24px;padding:10px 0 18px;border-bottom:1px solid var(--border)}
+.tab-heading h1{font-size:clamp(30px,5vw,44px);margin:10px 0}
+.tab-heading p{color:var(--muted);line-height:1.6;margin:0;max-width:600px}
+.navbar{gap:7px}
+.navbar a[aria-current="page"]{font-weight:700}
+@media(max-width:560px){
+  .navbar{display:flex;flex-wrap:nowrap;overflow-x:auto;overscroll-behavior-x:contain;scrollbar-width:thin}
+  .navbar a{flex:0 0 auto;white-space:nowrap}
+  .tab-heading{margin-top:2px;padding-bottom:14px}
+}
+
 </style>
 </head>
 <body>
@@ -103,13 +116,17 @@ button:disabled{opacity:.55;cursor:not-allowed;filter:none}
 <h1 id="heroTitle">Создавай больше.<br><span>Меняй правила.</span></h1>
 <p class="subtitle">Пространство, где идеи становятся проектами, люди объединяются в команды, а каждый шаг приближает к результату.</p>
 <div class="actions"><button class="primary" id="createBtn">＋ Создать проект</button><button id="demoBtn">Загрузить демо-проекты</button></div><div class="hero-foot"><span><i></i> Личное рабочее пространство</span><span>Идеи → Проекты → Результат</span></div></div><div class="hero-orbit" aria-hidden="true"><div class="orbit orbit-one"></div><div class="orbit orbit-two"></div><div class="orbit-core"><span>K</span><small>ONE</small></div><span class="orbit-node node-one">IDEA</span><span class="orbit-node node-two">BUILD</span><span class="orbit-node node-three">GROW</span></div></section>
+<section class="tab-heading" data-tab-heading="profile"><span class="tag">РАБОЧЕЕ ПРОСТРАНСТВО / 05</span><h1>Твой <span>профиль</span></h1><p>Твоя история, вклад и достижения в KORRI ONE.</p></section>
 <section class="panel profile-panel" id="profileSection"><div class="panel-head"><h2>Профиль участника</h2><button id="profileBtn" class="primary">✎ Настроить</button></div><div class="profile-hero"><div class="profile-avatar" id="profileAvatar">K</div><div class="profile-identity"><div class="tag">УЧАСТНИК KORRI ONE</div><h2 id="profileDisplayName">Новый участник</h2><p id="profileHandle">@korri_user</p><p class="profile-line" id="profileSummary">Создай профиль и начни собирать свою историю.</p></div></div><div class="profile-details" id="profileDetails"></div><div class="profile-stats" id="profileStats"></div><div class="profile-subhead"><h3>🏆 Достижения</h3><span class="public-muted">Открываются за реальные действия в прототипе</span></div><div class="achievement-grid" id="profileAchievements"></div><div class="profile-subhead"><h3>⚡ Последние достижения и вклад</h3></div><div id="profileHighlights" class="contribution-list"></div><p class="profile-note">Профиль и достижения пока хранятся только в этом браузере. Они не являются публичными и не синхронизируются между устройствами.</p></section><div class="stats">
 <div class="stat"><strong id="projectCount">0</strong><small>Проектов</small></div>
 <div class="stat"><strong id="taskCount">0</strong><small>Всего задач</small></div>
 <div class="stat"><strong id="doneCount">0</strong><small>Выполнено</small></div>
 </div>
+<section class="tab-heading" data-tab-heading="projects"><span class="tag">РАБОЧЕЕ ПРОСТРАНСТВО / 02</span><h1>Твои <span>проекты</span></h1><p>Организуй задачи, планируй этапы и отслеживай прогресс.</p></section>
 <div class="section-title" id="projectsSection"><h2>Твои проекты</h2><span class="tag">МОЯ ВСЕЛЕННАЯ</span><input class="search" id="searchInput" type="search" placeholder="Поиск по проектам…" aria-label="Поиск по проектам"></div>
-<div class="projects" id="projects"></div><section class="panel" id="teamsSection"><div class="panel-head"><h2>Команды</h2><button id="createTeamBtn" class="primary">＋ Создать команду</button></div><p class="profile-line">Объединяй людей вокруг общей идеи. Сейчас команды работают в демо-режиме на этом устройстве.</p><div class="teams" id="teams"></div></section><section class="panel" id="activitySection"><div class="panel-head"><h2>История активности</h2><button id="clearActivityBtn">Очистить историю</button></div><p class="profile-line">Здесь отображаются последние действия в этом браузере.</p><div class="activity-list" id="activityList"></div></section><div id="notice" role="status"></div><div class="modal-backdrop" id="modalBackdrop"><section class="modal" role="dialog" aria-modal="true" aria-labelledby="modalTitle"><h2 id="modalTitle"></h2><p class="modal-desc" id="modalDesc"></p><form id="modalForm"><div id="modalFields"></div><div class="modal-actions"><button type="button" id="modalCancel">Отмена</button><button class="primary" type="submit" id="modalSubmit">Сохранить</button></div></form></section></div>
+<div class="projects" id="projects"></div><section class="tab-heading" data-tab-heading="teams"><span class="tag">РАБОЧЕЕ ПРОСТРАНСТВО / 03</span><h1>Твои <span>команды</span></h1><p>Собирай людей вокруг общих идей и распределяй роли.</p></section>
+<section class="panel" id="teamsSection"><div class="panel-head"><h2>Команды</h2><button id="createTeamBtn" class="primary">＋ Создать команду</button></div><p class="profile-line">Объединяй людей вокруг общей идеи. Сейчас команды работают в демо-режиме на этом устройстве.</p><div class="teams" id="teams"></div></section><section class="tab-heading" data-tab-heading="activity"><span class="tag">РАБОЧЕЕ ПРОСТРАНСТВО / 04</span><h1>Журнал <span>активности</span></h1><p>Следи за изменениями и последними действиями.</p></section>
+<section class="panel" id="activitySection"><div class="panel-head"><h2>История активности</h2><button id="clearActivityBtn">Очистить историю</button></div><p class="profile-line">Здесь отображаются последние действия в этом браузере.</p><div class="activity-list" id="activityList"></div></section><div id="notice" role="status"></div><div class="modal-backdrop" id="modalBackdrop"><section class="modal" role="dialog" aria-modal="true" aria-labelledby="modalTitle"><h2 id="modalTitle"></h2><p class="modal-desc" id="modalDesc"></p><form id="modalForm"><div id="modalFields"></div><div class="modal-actions"><button type="button" id="modalCancel">Отмена</button><button class="primary" type="submit" id="modalSubmit">Сохранить</button></div></form></section></div>
 </main>
 <footer>KORRI ONE © 2026 · Создано для больших идей</footer>
 <script>
@@ -278,10 +295,10 @@ $("projects").addEventListener("click",event=>{const button=event.target.closest
 // Вкладки приложения: показываем только выбранный раздел.
 const tabSections={
   home:[$("#home .hero-panel"),$(".stats")],
-  projects:[$("#projectsSection"),$("#projects")],
-  teams:[$("#teamsSection")],
-  activity:[$("#activitySection")],
-  profile:[$("#profileSection")]
+  projects:[$('[data-tab-heading="projects"]'),$("#projectsSection"),$("#projects")],
+  teams:[$('[data-tab-heading="teams"]'),$("#teamsSection")],
+  activity:[$('[data-tab-heading="activity"]'),$("#activitySection")],
+  profile:[$('[data-tab-heading="profile"]'),$("#profileSection")]
 };
 function activateTab(name,scroll=true){
   if(!tabSections[name])name="home";
