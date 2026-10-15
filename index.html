@@ -106,6 +106,7 @@ button:disabled{opacity:.55;cursor:not-allowed;filter:none}
   .tab-heading{margin-top:2px;padding-bottom:14px}
 }
 
+.project-toolbar{display:flex;align-items:center;justify-content:space-between;gap:14px;flex-wrap:wrap;margin:20px 0 14px;padding:18px 20px;border:1px solid var(--border);border-radius:16px;background:linear-gradient(110deg,#171222,#0e0d16)}.project-toolbar .actions{margin:0}.project-toolbar p{margin:0;color:var(--muted);font-size:13px;line-height:1.5}.stats{margin-bottom:26px}.stats .stat{background:linear-gradient(145deg,#15111f,#0e0d15)}@media(max-width:560px){.project-toolbar{align-items:flex-start;padding:15px}.project-toolbar .actions{width:100%}.project-toolbar .actions button{flex:1}}
 </style>
 </head>
 <body>
@@ -114,14 +115,10 @@ button:disabled{opacity:.55;cursor:not-allowed;filter:none}
 <main id="appMain">
 <section class="tab-page" id="home" data-tab-page="home">
 <section class="hero-panel" aria-labelledby="heroTitle"><div class="hero-copy"><div class="tag"><span class="hero-pulse"></span> ТВОЯ ИДЕЯ. ТВОЙ МИР.</div>
-<h1 id="heroTitle">Создавай больше.<br><span>Меняй правила.</span></h1>
-<p class="subtitle">Пространство, где идеи становятся проектами, люди объединяются в команды, а каждый шаг приближает к результату.</p>
-<div class="actions"><button class="primary" id="createBtn">＋ Создать проект</button><button id="demoBtn">Загрузить демо-проекты</button></div><div class="hero-foot"><span><i></i> Личное рабочее пространство</span><span>Идеи → Проекты → Результат</span></div></div><div class="hero-orbit" aria-hidden="true"><div class="orbit orbit-one"></div><div class="orbit orbit-two"></div><div class="orbit-core"><span>K</span><small>ONE</small></div><span class="orbit-node node-one">IDEA</span><span class="orbit-node node-two">BUILD</span><span class="orbit-node node-three">GROW</span></div></section>
-<div class="stats">
-<div class="stat"><strong id="projectCount">0</strong><small>Проектов</small></div>
-<div class="stat"><strong id="taskCount">0</strong><small>Всего задач</small></div>
-<div class="stat"><strong id="doneCount">0</strong><small>Выполнено</small></div>
-</div>
+<h1 id="heroTitle">Добро пожаловать<br>в <span>KORRI ONE</span></h1>
+<p class="subtitle">Твоё пространство для идей, проектов и команд. Собирай мысли в одном месте, двигайся к целям и превращай планы в результат.</p>
+<div class="hero-foot"><span><i></i> Личное рабочее пространство</span><span>Идеи → Проекты → Результат</span></div></div><div class="hero-orbit" aria-hidden="true"><div class="orbit orbit-one"></div><div class="orbit orbit-two"></div><div class="orbit-core"><span>K</span><small>ONE</small></div><span class="orbit-node node-one">IDEA</span><span class="orbit-node node-two">BUILD</span><span class="orbit-node node-three">GROW</span></div></section>
+
 
 </section>
 <section class="tab-page" data-tab-page="profile">
@@ -130,6 +127,12 @@ button:disabled{opacity:.55;cursor:not-allowed;filter:none}
 </section>
 <section class="tab-page" data-tab-page="projects">
 <section class="tab-heading" data-tab-heading="projects"><span class="tag">РАБОЧЕЕ ПРОСТРАНСТВО / 02</span><h1>Твои <span>проекты</span></h1><p>Организуй задачи, планируй этапы и отслеживай прогресс.</p></section>
+<div class="project-toolbar"><div class="actions"><button class="primary" id="createBtn">＋ Создать проект</button><button id="demoBtn">Загрузить демо-проекты</button></div><p>Управляй своими идеями и следи за прогрессом.</p></div>
+<div class="stats">
+<div class="stat"><strong id="projectCount">0</strong><small>Проектов</small></div>
+<div class="stat"><strong id="taskCount">0</strong><small>Всего задач</small></div>
+<div class="stat"><strong id="doneCount">0</strong><small>Выполнено</small></div>
+</div>
 <div class="section-title" id="projectsSection"><h2>Твои проекты</h2><span class="tag">МОЯ ВСЕЛЕННАЯ</span><input class="search" id="searchInput" type="search" placeholder="Поиск по проектам…" aria-label="Поиск по проектам"></div>
 <div class="projects" id="projects"></div>
 </section>
@@ -142,7 +145,7 @@ button:disabled{opacity:.55;cursor:not-allowed;filter:none}
 <section class="panel" id="activitySection"><div class="panel-head"><h2>История активности</h2><button id="clearActivityBtn">Очистить историю</button></div><p class="profile-line">Здесь отображаются последние действия в этом браузере.</p><div class="activity-list" id="activityList"></div></section>
 </section>
 <div id="notice" role="status"></div><div class="modal-backdrop" id="modalBackdrop"><section class="modal" role="dialog" aria-modal="true" aria-labelledby="modalTitle"><h2 id="modalTitle"></h2><p class="modal-desc" id="modalDesc"></p><form id="modalForm"><div id="modalFields"></div><div class="modal-actions"><button type="button" id="modalCancel">Отмена</button><button class="primary" type="submit" id="modalSubmit">Сохранить</button></div></form></section></div>
-</main></main>
+</main>
 <footer>KORRI ONE © 2026 · Создано для больших идей</footer>
 <script>
 const KEY="korri-one-projects-v1";
