@@ -295,10 +295,10 @@ $("projects").addEventListener("click",event=>{const button=event.target.closest
 // Вкладки приложения: показываем только выбранный раздел.
 const tabSections={
   home:[$("#home .hero-panel"),$(".stats")],
-  projects:[$('[data-tab-heading="projects"]'),$("#projectsSection"),$("#projects")],
-  teams:[$('[data-tab-heading="teams"]'),$("#teamsSection")],
-  activity:[$('[data-tab-heading="activity"]'),$("#activitySection")],
-  profile:[$('[data-tab-heading="profile"]'),$("#profileSection")]
+  projects:[document.querySelector('[data-tab-heading="projects"]'),$("#projectsSection"),$("#projects")],
+  teams:[document.querySelector('[data-tab-heading="teams"]'),$("#teamsSection")],
+  activity:[document.querySelector('[data-tab-heading="activity"]'),$("#activitySection")],
+  profile:[document.querySelector('[data-tab-heading="profile"]'),$("#profileSection")]
 };
 function activateTab(name,scroll=true){
   if(!tabSections[name])name="home";
