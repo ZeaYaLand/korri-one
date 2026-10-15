@@ -43,6 +43,26 @@ footer{padding:25px;text-align:center;color:#777188;font-size:12px;border-top:1p
 
 .profile-hero{display:flex;align-items:center;gap:16px;margin:20px 0}.profile-avatar{width:76px;height:76px;flex-shrink:0;display:grid;place-items:center;border-radius:22px;background:linear-gradient(145deg,#8b5cf6,#32134f);border:1px solid #c4a4ff;color:white;font-size:28px;font-weight:900;box-shadow:0 0 28px #a855f733}.profile-identity{min-width:0}.profile-identity h2{margin:6px 0;font-size:clamp(20px,4vw,28px);overflow-wrap:anywhere}.profile-identity p{margin:4px 0;color:var(--muted);font-size:13px;overflow-wrap:anywhere}.profile-details{display:flex;gap:7px;flex-wrap:wrap;margin:12px 0}.profile-stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(105px,1fr));gap:9px;margin:18px 0}.profile-stat{background:#0c0b13;border:1px solid var(--border);border-radius:11px;padding:12px}.profile-stat strong{display:block;font-size:22px;margin-bottom:4px}.profile-stat span{font-size:11px;color:var(--muted)}.profile-subhead{display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap;margin:22px 0 10px}.profile-subhead h3{margin:0;font-size:16px}.achievement-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(145px,1fr));gap:9px}.achievement{padding:13px;background:linear-gradient(145deg,#171322,#0d0c14);border:1px solid #39264f;border-radius:12px;min-width:0}.achievement.locked{opacity:.5;filter:saturate(.45)}.achievement-icon{font-size:24px;margin-bottom:8px}.achievement strong{display:block;font-size:13px;margin-bottom:5px}.achievement p{margin:0;color:var(--muted);font-size:11px;line-height:1.45}.achievement-status{display:inline-block;margin-top:9px;color:#c4a4ff;font-size:10px}.profile-note{font-size:11px;line-height:1.5;color:var(--muted);margin-top:18px}
 
+
+/* Accessibility and responsive interaction polish */
+:where(button,a,input,textarea,select,[tabindex]):focus-visible{outline:3px solid #c084fc;outline-offset:3px}
+button,.navbar a,.project,.team,.achievement{transition:background-color .18s ease,border-color .18s ease,filter .18s ease,transform .18s ease}
+button:active{transform:translateY(1px)}
+button:disabled{opacity:.55;cursor:not-allowed;filter:none}
+.search:focus-visible,.field:focus-visible,.modal input:focus-visible,.modal textarea:focus-visible,.modal select:focus-visible{border-color:#a855f7;outline:2px solid #a855f7;outline-offset:1px}
+.navbar{padding-top:max(12px,env(safe-area-inset-top))}
+@media(max-width:560px){
+  button{min-height:42px}
+  .profile-hero{align-items:flex-start;gap:12px}
+  .profile-avatar{width:60px;height:60px;border-radius:18px;font-size:23px}
+  .panel{padding:14px;margin:20px 0}
+  .project{padding:15px}
+  .roadmap-item{grid-template-columns:20px minmax(0,1fr);gap:8px}
+  .roadmap-item .phase-status{grid-column:2}
+}
+@media(prefers-reduced-motion:reduce){
+  *,*::before,*::after{scroll-behavior:auto!important;animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important}
+}
 </style>
 </head>
 <body>
