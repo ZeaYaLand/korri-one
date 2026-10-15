@@ -113,14 +113,14 @@ $("projects").innerHTML=visible.map(p=>{const done=p.tasks.filter(t=>t.done).len
 function logActivity(message){
 activity.unshift({id:Date.now().toString()+Math.random().toString(16).slice(2),message:String(message).slice(0,180),time:new Date().toISOString()});
 activity=activity.slice(0,40);
-try{localStorage.setItem(ACTIVITY_KEY,JSON.stringify(activity))}catch{}
+writeLocalData(ACTIVITY_KEY,activity,"историю активности");
 renderActivity();
 }
 function renderActivity(){
 if(!activity.length){$("activityList").innerHTML='<div class="empty">История пока пуста. Создай проект, задачу или команду.</div>';return}
 $("activityList").innerHTML=activity.map(item=>{const d=new Date(item.time);const date=Number.isNaN(d.getTime())?"":d.toLocaleString("ru-RU",{day:"2-digit",month:"short",hour:"2-digit",minute:"2-digit"});return `<div class="activity-item"><span class="activity-dot"></span><div class="activity-text">${escapeHTML(item.message)}<span class="activity-time">${escapeHTML(date)}</span></div></div>`}).join("");
 }
-$("clearActivityBtn").addEventListener("click",()=>{if(!activity.length)return;askDelete("Очистить историю?","Все записи активности в этом браузере будут удалены.",()=>{activity=[];try{localStorage.setItem(ACTIVITY_KEY,"[]")}catch{}renderActivity();$("notice").textContent="История очищена."})});
+$("clearActivityBtn").addEventListener("click",()=>{if(!activity.length)return;askDelete("Очистить историю?","Все записи активности в этом браузере будут удалены.",()=>{activity=[];if(!writeLocalData(ACTIVITY_KEY,activity,"историю активности"))return;renderActivity();$("notice").textContent="История очищена."})});
 function renderProfile(){
 const name=profile?.displayName||"Новый участник";
 const initials=name.trim().split(" ").slice(0,2).map(part=>part[0]||"").join("").toUpperCase()||"K";
