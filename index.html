@@ -70,6 +70,10 @@ try{projects=JSON.parse(localStorage.getItem(KEY)||"[]");if(!Array.isArray(proje
 try{teams=JSON.parse(localStorage.getItem(TEAM_KEY)||"[]");if(!Array.isArray(teams))teams=[]}catch{teams=[]}
 try{profile=JSON.parse(localStorage.getItem(PROFILE_KEY)||"null")}catch{profile=null}
 try{activity=JSON.parse(localStorage.getItem(ACTIVITY_KEY)||"[]");if(!Array.isArray(activity))activity=[]}catch{activity=[]}
+// Normalize locally stored records so older or partially damaged browser data does not break rendering.
+projects=projects.filter(p=>p&&typeof p==="object").map(p=>({...p,id:String(p.id||Date.now().toString()+Math.random().toString(16).slice(2)),name:String(p.name||"Без названия"),description:String(p.description||""),category:String(p.category||"Мой проект"),tasks:Array.isArray(p.tasks)?p.tasks.filter(t=>t&&typeof t==="object").map(t=>({...t,id:String(t.id||Date.now().toString()+Math.random().toString(16).slice(2)),title:String(t.title||"Без названия"),done:Boolean(t.done)})):[],roadmap:Array.isArray(p.roadmap)?p.roadmap.filter(x=>x&&typeof x==="object").map(x=>({...x,id:String(x.id||Date.now().toString()+Math.random().toString(16).slice(2)),title:String(x.title||"Без названия"),description:String(x.description||""),done:Boolean(x.done)})):[],relations:Array.isArray(p.relations)?p.relations.filter(r=>r&&typeof r==="object"):[],contributions:Array.isArray(p.contributions)?p.contributions.filter(x=>x&&typeof x==="object"):[]}));
+teams=teams.filter(t=>t&&typeof t==="object").map(t=>({...t,id:String(t.id||Date.now().toString()+Math.random().toString(16).slice(2)),name:String(t.name||"Без названия"),members:Array.isArray(t.members)?t.members.filter(m=>(m&&typeof m==="object")||typeof m==="string"):[]}));
+activity=activity.filter(a=>a&&typeof a==="object").map(a=>({...a,message:String(a.message||""),time:String(a.time||"")}));
 function save(){try{localStorage.setItem(KEY,JSON.stringify(projects));return true}catch{$("notice").textContent="Не удалось сохранить данные в этом браузере.";return false}}
 function escapeHTML(value){return String(value).replace(/[&<>"']/g,char=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[char]))}
 
