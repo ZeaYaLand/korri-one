@@ -175,11 +175,45 @@ input:focus,select:focus,textarea:focus,button:focus-visible,a:focus-visible{out
 @media(max-width:760px){.hero-panel{grid-template-columns:1fr;min-height:0}.hero-orbit{transform:scale(.82);margin:-5px 0 -12px}.hero-foot{gap:8px 14px}.home-feature-grid{grid-template-columns:1fr}.stats{grid-template-columns:repeat(2,minmax(0,1fr))}.navbar{position:relative;padding:10px 12px}.navbar a{padding:9px 11px}}
 @media(max-width:440px){header{padding:17px 15px}.logo{font-size:21px}.status{font-size:9px;padding:6px 8px}main{padding:20px 12px 40px}.hero-panel{padding:21px 18px;border-radius:16px}.hero-copy h1{font-size:31px}.hero-orbit{margin-left:-10px}.panel{padding:14px}.home-feature-head{align-items:flex-start}.home-feature-head h3{font-size:17px}.home-task-priority{font-size:9px;padding:4px 5px}.project-filters{grid-template-columns:1fr}.project-filters label select{width:100%}}
 @media(prefers-reduced-motion:reduce){*,*:before,*:after{scroll-behavior:auto!important;transition:none!important;animation:none!important}}
+
+/* KORRI ONE product workspace shell */
+body{background:#07070e;overflow-x:hidden}
+.app-header{height:76px;padding:0 clamp(16px,2.5vw,36px);display:flex;align-items:center;gap:24px;background:#090910f5;border-bottom:1px solid #282238;position:sticky;top:0;z-index:15;backdrop-filter:blur(18px)}
+.app-header:after{display:none}.app-header .logo{text-decoration:none;flex:0 0 190px;font-size:25px;white-space:nowrap}
+.header-search-wrap{position:relative;display:flex;align-items:center;gap:10px;flex:1;max-width:720px;border:1px solid #2d2940;background:#10101a;border-radius:12px;padding:0 13px;height:42px;color:#9387ab}
+.header-search-wrap:focus-within{border-color:#8b5cf6;box-shadow:0 0 0 3px #8b5cf61a}
+.header-search-wrap input{width:100%;min-width:0;border:0!important;outline:0!important;background:transparent!important;padding:8px 0;color:#f4f0ff;font-size:12px;box-shadow:none!important}
+.header-search-wrap kbd{font-size:17px;color:#bba5d8}
+.global-search-results{position:absolute;top:calc(100% + 9px);left:0;right:0;background:#10101b;border:1px solid #3a2e50;border-radius:13px;padding:7px;box-shadow:0 18px 50px #0009;z-index:30;max-height:390px;overflow:auto}
+.global-search-results[hidden]{display:none}.global-result{display:flex;align-items:center;gap:10px;width:100%;text-align:left;border:0;background:transparent;padding:11px;border-radius:9px}.global-result:hover{background:#211630}.global-result-icon{width:32px;height:32px;display:grid;place-items:center;border:1px solid #45305d;border-radius:9px;color:#d8b4fe;background:#21152f;flex:0 0 32px}.global-result-copy{display:flex;flex:1;min-width:0;flex-direction:column;gap:4px}.global-result-copy strong{font-size:12px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.global-result-copy small{font-size:10px;color:#9d96b3;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.global-result-arrow{color:#c084fc}.global-no-results{padding:17px 12px;color:#a7a0ba;font-size:12px}
+.header-actions{display:flex;align-items:center;gap:12px;margin-left:auto}.header-actions button{white-space:nowrap}.header-actions button span{font-size:12px}.header-actions .status{font-size:9px;white-space:nowrap;background:#111020;border-color:#38294b;letter-spacing:.7px}
+.status-dot{display:inline-block;width:6px;height:6px;background:#a78bfa;border-radius:50%;box-shadow:0 0 9px #a78bfa;margin-right:5px}
+.mobile-menu{display:none;padding:9px 11px;font-size:18px}
+.app-shell{display:grid;grid-template-columns:238px minmax(0,1fr);min-height:calc(100vh - 76px)}
+.sidebar{position:sticky;top:76px;height:calc(100vh - 76px);display:flex;flex-direction:column;padding:25px 14px 16px;background:linear-gradient(180deg,#0b0a13,#090910);border-right:1px solid #252137;z-index:10}
+.sidebar-label{font-size:9px;color:#766d8b;letter-spacing:1.6px;padding:0 12px 14px}
+.navbar{position:static;display:flex;flex-direction:column;gap:5px;padding:0;background:transparent;border:0;backdrop-filter:none}
+.navbar a{display:flex;align-items:center;gap:12px;width:100%;padding:12px;border:1px solid transparent;border-radius:10px;color:#9d98b1;font-size:12px;text-decoration:none}
+.navbar a:hover{background:#171320;border-color:#2b2239;color:#eee5ff}
+.navbar a[aria-current=page]{background:linear-gradient(100deg,#2a183e,#171222);border-color:#3e2a56;box-shadow:inset 3px 0 #b46af4;color:#fff}
+.nav-icon{display:grid;place-items:center;width:23px;height:23px;border-radius:7px;background:#191522;color:#c4a4ff;font-size:17px;flex:0 0 23px}
+.nav-shortcut{margin-left:auto;color:#5e566f;font-size:9px}
+.sidebar-bottom{margin-top:auto}.sidebar-mini-card{display:flex;align-items:center;gap:10px;padding:13px 10px;border:1px solid #2c233d;background:linear-gradient(130deg,#191226,#0d0d15);border-radius:12px}
+.sidebar-mini-icon{display:grid;place-items:center;width:31px;height:31px;background:#29183c;border-radius:9px;color:#d8b4fe}
+.sidebar-mini-card div{display:flex;flex-direction:column;gap:4px;min-width:0}.sidebar-mini-card strong{font-size:10px}.sidebar-mini-card small{font-size:9px;color:#8e87a3;line-height:1.4}
+.sidebar-version{font-size:8px;color:#716a84;letter-spacing:.7px;padding:16px 8px 0}
+.workspace-main{min-width:0}main#appMain{width:100%;max-width:none;margin:0;padding:clamp(22px,3vw,42px) clamp(18px,3vw,44px) 60px}
+.tab-page{max-width:1500px;margin:0 auto}.hero-panel{margin-bottom:24px}.home-feature-grid{margin-top:20px}
+.tab-heading{padding-top:2px}.tab-heading h1{margin:9px 0}.tab-heading p{max-width:760px}
+.mobile-menu{border-color:#332541;background:#15101e;color:#d8b4fe}
+@media(max-width:1100px){.app-header{gap:14px}.app-header .logo{flex-basis:155px;font-size:22px}.header-actions .status{display:none}.app-shell{grid-template-columns:205px minmax(0,1fr)}main#appMain{padding:25px 22px 50px}}
+@media(max-width:760px){.app-header{height:64px;padding:0 13px;gap:10px}.mobile-menu{display:block}.app-header .logo{flex:0 0 auto;font-size:20px}.header-search-wrap{height:38px;padding:0 9px;gap:6px}.header-search-wrap input{font-size:11px}.header-search-wrap kbd{display:none}.header-actions{margin-left:0}.header-actions button{padding:9px 10px}.header-actions button span{display:none}.app-shell{display:block;min-height:calc(100vh - 64px)}.sidebar{position:fixed;top:64px;left:0;bottom:0;height:auto;width:260px;transform:translateX(-105%);transition:transform .2s ease;box-shadow:15px 0 50px #0006}.sidebar.sidebar-open{transform:translateX(0)}main#appMain{padding:20px 14px 45px}.hero-panel{grid-template-columns:1fr}.hero-orbit{margin-top:-5px}.global-search-results{position:fixed;top:61px;left:10px;right:10px}.sidebar-version{padding-bottom:14px}}
+@media(max-width:460px){.app-header{gap:7px}.app-header .logo{font-size:17px;letter-spacing:1px}.header-actions .primary{font-size:0;padding:9px 11px}.header-search-wrap input{font-size:10px}.header-search-wrap input::placeholder{color:#777087}.header-search-wrap{min-width:0}.mobile-menu{padding:8px 9px;font-size:16px}main#appMain{padding:16px 11px 36px}}
 </style>
 </head>
 <body>
-<header><div class="logo">KORRI <span>ONE</span></div><div class="status">● ПРОТОТИП</div></header>
-<nav class="navbar" aria-label="Главное меню"><a href="#home">Главная</a><a href="#projectsSection">Проекты</a><a href="#teamsSection">Команды</a><a href="#activitySection">Активность</a><a href="#profileSection">Профиль</a></nav>
+<header class="app-header"><button type="button" class="mobile-menu" id="mobileMenu" aria-label="Открыть меню">☰</button><a href="#home" class="logo" aria-label="KORRI ONE — главная">KORRI <span>ONE</span></a><div class="header-search-wrap"><input id="globalSearch" type="search" placeholder="Поиск проектов, команд, активности…" aria-label="Глобальный поиск"><kbd>⌕</kbd><div id="globalSearchResults" class="global-search-results" hidden></div></div><div class="header-actions"><button type="button" id="headerCreateProject" class="primary">＋ <span>Новый проект</span></button><div class="status"><span class="status-dot"></span> ЛИЧНОЕ ПРОСТРАНСТВО</div></div></header>
+<div class="app-shell"><aside class="sidebar" id="appSidebar"><div class="sidebar-label">РАБОЧЕЕ ПРОСТРАНСТВО</div><nav class="navbar" aria-label="Главное меню"><a href="#home"><span class="nav-icon">⌂</span><span>Главная</span><span class="nav-shortcut">01</span></a><a href="#projectsSection"><span class="nav-icon">▦</span><span>Проекты</span><span class="nav-shortcut">02</span></a><a href="#teamsSection"><span class="nav-icon">♧</span><span>Команды</span><span class="nav-shortcut">03</span></a><a href="#activitySection"><span class="nav-icon">◷</span><span>Активность</span><span class="nav-shortcut">04</span></a><a href="#profileSection"><span class="nav-icon">◉</span><span>Профиль</span><span class="nav-shortcut">05</span></a></nav><div class="sidebar-bottom"><div class="sidebar-mini-card"><span class="sidebar-mini-icon">✦</span><div><strong>Твоя вселенная</strong><small>Создавай. Развивай. Действуй.</small></div></div><div class="sidebar-version"><span class="status-dot"></span> KORRI ONE WORKSPACE</div></div></aside><div class="workspace-main">
 <main id="appMain">
 <section class="tab-page" id="home" data-tab-page="home">
 <section class="hero-panel" aria-labelledby="heroTitle"><div class="hero-copy"><div class="tag"><span class="hero-pulse"></span> ТВОЯ ИДЕЯ. ТВОЙ МИР.</div>
@@ -219,7 +253,7 @@ input:focus,select:focus,textarea:focus,button:focus-visible,a:focus-visible{out
 <section class="panel" id="activitySection"><div class="panel-head"><h2>История активности</h2><button id="clearActivityBtn">Очистить историю</button></div><p class="profile-line">Здесь отображаются последние действия в этом браузере.</p><div class="team-toolbar"><input class="search" id="activitySearch" type="search" placeholder="Поиск по истории…" aria-label="Поиск по истории активности"><select id="activityTypeFilter" aria-label="Фильтр по типу события"><option value="all">Все события</option><option value="project">Проекты</option><option value="task">Задачи</option><option value="team">Команды</option><option value="profile">Профиль</option><option value="other">Другие</option></select><button id="resetActivityFilters">Сбросить</button></div><p class="profile-line" id="activityResults" aria-live="polite"></p><div class="activity-list" id="activityList"></div></section>
 </section>
 <div id="notice" role="status"></div><div class="modal-backdrop" id="modalBackdrop"><section class="modal" role="dialog" aria-modal="true" aria-labelledby="modalTitle"><h2 id="modalTitle"></h2><p class="modal-desc" id="modalDesc"></p><form id="modalForm"><div id="modalFields"></div><div class="modal-actions"><button type="button" id="modalCancel">Отмена</button><button class="primary" type="submit" id="modalSubmit">Сохранить</button></div></form></section></div>
-</main>
+</main></div></div>
 <footer>KORRI ONE © 2026 · Создано для больших идей</footer>
 <script>
 const KEY="korri-one-projects-v1";
@@ -484,6 +518,26 @@ function activateTab(name,scroll=true){
   document.body.dataset.activeTab=name;
   if(scroll)window.scrollTo({top:0,behavior:matchMedia("(prefers-reduced-motion: reduce)").matches?"auto":"smooth"});
 }
+
+const globalSearch=$("globalSearch"),globalResults=$("globalSearchResults");
+function closeGlobalResults(){globalResults.hidden=true;globalResults.innerHTML="";}
+function runGlobalSearch(){
+ const q=(globalSearch.value||"").trim().toLocaleLowerCase("ru-RU");
+ if(!q){closeGlobalResults();return}
+ const results=[];
+ projects.forEach(p=>{if([p.name,p.description,p.category].some(v=>String(v||"").toLocaleLowerCase("ru-RU").includes(q)))results.push({kind:"Проект",title:p.name,detail:p.description||p.category||"Проект",tab:"projects"})});
+ teams.forEach(t=>{if([t.name,t.description,...(t.members||[]).map(m=>m.name)].some(v=>String(v||"").toLocaleLowerCase("ru-RU").includes(q)))results.push({kind:"Команда",title:t.name,detail:t.description||"Команда KORRI ONE",tab:"teams"})});
+ activity.forEach(a=>{if(String(a.message||"").toLocaleLowerCase("ru-RU").includes(q))results.push({kind:"Активность",title:a.message,detail:a.date||"История действий",tab:"activity"})});
+ const top=results.slice(0,8);globalResults.queryResults=top;
+ globalResults.innerHTML=top.length?top.map((r,i)=>'<button type="button" class="global-result" data-result-index="'+i+'"><span class="global-result-icon">'+({Проект:"▦",Команда:"♧",Активность:"◷"}[r.kind])+'</span><span class="global-result-copy"><strong>'+escapeHTML(r.title)+'</strong><small>'+escapeHTML(r.kind+" · "+r.detail)+'</small></span><span class="global-result-arrow">↗</span></button>').join(""):'<div class="global-no-results">Ничего не найдено по запросу «'+escapeHTML(q)+'»</div>';
+ globalResults.hidden=false;
+}
+globalSearch.addEventListener("input",runGlobalSearch);
+globalSearch.addEventListener("keydown",event=>{if(event.key==="Escape")closeGlobalResults();if(event.key==="Enter"){const first=globalResults.queryResults?.[0];if(first){activateTab(first.tab);closeGlobalResults();globalSearch.blur();}}});
+globalResults.addEventListener("click",event=>{const button=event.target.closest("[data-result-index]");if(!button)return;const result=globalResults.queryResults?.[Number(button.dataset.resultIndex)];if(result){activateTab(result.tab);closeGlobalResults();}});
+document.addEventListener("click",event=>{if(!event.target.closest(".header-search-wrap"))closeGlobalResults();});
+$("headerCreateProject").addEventListener("click",()=>{activateTab("projects");$("createBtn").click();});
+$("mobileMenu").addEventListener("click",()=>{$("appSidebar").classList.toggle("sidebar-open");});
 document.querySelector(".navbar").addEventListener("click",event=>{
   const link=event.target.closest("a[href^=\"#\"]");
   if(!link)return;
