@@ -38,22 +38,25 @@ button:hover{filter:brightness(1.15)}
 footer{padding:25px;text-align:center;color:#777188;font-size:12px;border-top:1px solid var(--border);margin-top:45px}
 #notice{color:#d8c2ff;font-size:13px;min-height:20px;margin-top:12px}
 @media(max-width:500px){header{padding:18px}main{padding:28px 16px}.status{font-size:10px}}
+
+.navbar{display:flex;gap:8px;flex-wrap:wrap;padding:12px 6%;border-bottom:1px solid var(--border);background:#0c0b13;position:sticky;top:0;z-index:5}.navbar a{color:var(--muted);text-decoration:none;padding:9px 12px;border-radius:9px;font-size:13px;border:1px solid transparent}.navbar a:focus,.navbar a:hover{color:var(--text);background:#211633;border-color:#39264f}.modal-backdrop{position:fixed;inset:0;background:rgba(4,3,10,.78);backdrop-filter:blur(8px);z-index:20;display:none;align-items:center;justify-content:center;padding:16px}.modal-backdrop.open{display:flex}.modal{width:min(100%,520px);max-height:90vh;overflow:auto;background:#12101c;border:1px solid #493064;border-radius:18px;padding:20px;box-shadow:0 24px 90px #0009}.modal h2{margin:0 0 8px;font-size:22px}.modal-desc{color:var(--muted);font-size:13px;line-height:1.5;margin:0 0 16px}.modal label{display:block;font-size:13px;color:#d8c2ff;margin:12px 0 6px}.modal input,.modal textarea,.modal select{width:100%;background:#0b0a12;border:1px solid var(--border);border-radius:10px;padding:12px;color:var(--text);font:inherit}.modal textarea{min-height:92px;resize:vertical}.modal-actions{display:flex;justify-content:flex-end;gap:8px;flex-wrap:wrap;margin-top:18px}@media(max-width:560px){.navbar{padding:10px 12px;gap:5px}.navbar a{font-size:12px;padding:8px}.modal{padding:16px}}
 </style>
 </head>
 <body>
 <header><div class="logo">KORRI <span>ONE</span></div><div class="status">● ПРОТОТИП</div></header>
-<main>
+<nav class="navbar" aria-label="Главное меню"><a href="#home">Главная</a><a href="#projectsSection">Проекты</a><a href="#teamsSection">Команды</a><a href="#activitySection">Активность</a><a href="#profileSection">Профиль</a></nav>
+<main id="home">
 <div class="tag">Твоя идея. Твой мир.</div>
 <h1>Создавай больше.<br><span>Меняй правила.</span></h1>
 <p class="subtitle">Пространство, где идеи становятся проектами, люди объединяются в команды, а каждый шаг приближает к результату.</p>
 <div class="actions"><button class="primary" id="createBtn">＋ Создать проект</button><button id="demoBtn">Загрузить демо-проекты</button></div>
-<section class="panel"><div class="panel-head"><h2>Твой профиль</h2><button id="profileBtn" class="primary">Настроить профиль</button></div><p class="profile-line" id="profileSummary">Создай демо-профиль, чтобы подготовить пространство участника.</p><small>Пока профиль хранится только в этом браузере. Регистрация по электронной почте появится после подключения безопасного сервера.</small></section><div class="stats">
+<section class="panel" id="profileSection"><div class="panel-head"><h2>Твой профиль</h2><button id="profileBtn" class="primary">Настроить профиль</button></div><p class="profile-line" id="profileSummary">Создай демо-профиль, чтобы подготовить пространство участника.</p><small>Пока профиль хранится только в этом браузере. Регистрация по электронной почте появится после подключения безопасного сервера.</small></section><div class="stats">
 <div class="stat"><strong id="projectCount">0</strong><small>Проектов</small></div>
 <div class="stat"><strong id="taskCount">0</strong><small>Всего задач</small></div>
 <div class="stat"><strong id="doneCount">0</strong><small>Выполнено</small></div>
 </div>
-<div class="section-title"><h2>Твои проекты</h2><span class="tag">МОЯ ВСЕЛЕННАЯ</span><input class="search" id="searchInput" type="search" placeholder="Поиск по проектам…" aria-label="Поиск по проектам"></div>
-<div class="projects" id="projects"></div><section class="panel"><div class="panel-head"><h2>Команды</h2><button id="createTeamBtn" class="primary">＋ Создать команду</button></div><p class="profile-line">Объединяй людей вокруг общей идеи. Сейчас команды работают в демо-режиме на этом устройстве.</p><div class="teams" id="teams"></div></section><section class="panel"><div class="panel-head"><h2>История активности</h2><button id="clearActivityBtn">Очистить историю</button></div><p class="profile-line">Здесь отображаются последние действия в этом браузере.</p><div class="activity-list" id="activityList"></div></section><div id="notice" role="status"></div>
+<div class="section-title" id="projectsSection"><h2>Твои проекты</h2><span class="tag">МОЯ ВСЕЛЕННАЯ</span><input class="search" id="searchInput" type="search" placeholder="Поиск по проектам…" aria-label="Поиск по проектам"></div>
+<div class="projects" id="projects"></div><section class="panel" id="teamsSection"><div class="panel-head"><h2>Команды</h2><button id="createTeamBtn" class="primary">＋ Создать команду</button></div><p class="profile-line">Объединяй людей вокруг общей идеи. Сейчас команды работают в демо-режиме на этом устройстве.</p><div class="teams" id="teams"></div></section><section class="panel" id="activitySection"><div class="panel-head"><h2>История активности</h2><button id="clearActivityBtn">Очистить историю</button></div><p class="profile-line">Здесь отображаются последние действия в этом браузере.</p><div class="activity-list" id="activityList"></div></section><div id="notice" role="status"></div><div class="modal-backdrop" id="modalBackdrop"><section class="modal" role="dialog" aria-modal="true" aria-labelledby="modalTitle"><h2 id="modalTitle"></h2><p class="modal-desc" id="modalDesc"></p><form id="modalForm"><div id="modalFields"></div><div class="modal-actions"><button type="button" id="modalCancel">Отмена</button><button class="primary" type="submit" id="modalSubmit">Сохранить</button></div></form></section></div>
 </main>
 <footer>KORRI ONE © 2026 · Создано для больших идей</footer>
 <script>
@@ -69,6 +72,25 @@ try{profile=JSON.parse(localStorage.getItem(PROFILE_KEY)||"null")}catch{profile=
 try{activity=JSON.parse(localStorage.getItem(ACTIVITY_KEY)||"[]");if(!Array.isArray(activity))activity=[]}catch{activity=[]}
 function save(){try{localStorage.setItem(KEY,JSON.stringify(projects));return true}catch{$("notice").textContent="Не удалось сохранить данные в этом браузере.";return false}}
 function escapeHTML(value){return String(value).replace(/[&<>"']/g,char=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[char]))}
+
+function showForm(title,description,fields,submitLabel,onSubmit){
+const backdrop=$("modalBackdrop"),form=$("modalForm"),host=$("modalFields");
+$("modalTitle").textContent=title;$("modalDesc").textContent=description||"";$("modalSubmit").textContent=submitLabel||"Сохранить";
+host.innerHTML=fields.map(f=>{const id="mf_"+f.name;let control="";
+if(f.type==="textarea")control='<textarea id="'+id+'" name="'+f.name+'" maxlength="'+(f.maxlength||500)+'" '+(f.required?"required":"")+' placeholder="'+escapeHTML(f.placeholder||"")+'">'+escapeHTML(f.value||"")+'</textarea>';
+else if(f.type==="select")control='<select id="'+id+'" name="'+f.name+'" '+(f.required?"required":"")+'>'+f.options.map(o=>'<option value="'+escapeHTML(o.value)+'" '+(String(o.value)===String(f.value)?"selected":"")+'>'+escapeHTML(o.label)+'</option>').join("")+'</select>';
+else control='<input id="'+id+'" name="'+f.name+'" type="'+(f.type||"text")+'" maxlength="'+(f.maxlength||300)+'" value="'+escapeHTML(f.value||"")+'" placeholder="'+escapeHTML(f.placeholder||"")+'" '+(f.required?"required":"")+(f.type==="date"&&f.min?' min="'+f.min+'"':"")+'>';
+return '<label for="'+id+'">'+escapeHTML(f.label)+'</label>'+control}).join("");
+backdrop.classList.add("open");const first=host.querySelector("input,textarea,select");if(first)first.focus();
+const close=()=>{backdrop.classList.remove("open");form.onsubmit=null};
+$("modalCancel").onclick=close;backdrop.onclick=e=>{if(e.target===backdrop)close()};
+form.onsubmit=e=>{e.preventDefault();const data={};fields.forEach(f=>{const el=form.elements.namedItem(f.name);data[f.name]=el?el.value.trim():""});if(fields.some(f=>f.required&&!data[f.name]))return;const result=onSubmit(data);if(result!==false)close()};
+}
+function askDelete(title,description,action){
+showForm(title,description,[],"Удалить",()=>{action();return true});
+$("modalCancel").onclick=()=>{$("modalBackdrop").classList.remove("open");$("modalForm").onsubmit=null};
+}
+
 function render(){
 $("projectCount").textContent=projects.length;
 $("taskCount").textContent=projects.reduce((sum,p)=>sum+p.tasks.length,0);
@@ -107,57 +129,10 @@ const memberRows=t.members.map((m,i)=>`<div class="task-row"><span class="task-n
 return `<article class="team"><small>КОМАНДА</small><h3>${escapeHTML(t.name)}</h3><p>${escapeHTML(t.description||"Цель команды пока не указана.")}</p><small>${t.members.length} участник(ов) · ${canManage?"Управление доступно":"Только просмотр списка"}</small><div class="project-buttons">${canManage?`<button data-team-action="member" data-id="${t.id}">＋ Пригласить участника</button><button class="danger" data-team-action="delete" data-id="${t.id}">Удалить команду</button>`:""}</div><div class="task-list">${memberRows||"Список участников пуст"}</div><p><small>Демо-режим: приглашения и роли пока действуют только в этом браузере.</small></p></article>`
 }).join("");
 }
-$("profileBtn").addEventListener("click",()=>{
-const displayName=prompt("Как тебя показывать в KORRI ONE?",profile?.displayName||"");if(displayName===null)return;if(!displayName.trim()){alert("Укажи отображаемое имя.");return}
-const username=prompt("Придумай имя пользователя без @ (необязательно):",profile?.username||"")||"";
-const bio=prompt("Коротко о себе и своих интересах (необязательно):",profile?.bio||"")||"";
-profile={displayName:displayName.trim().slice(0,50),username:username.trim().replace(/^@/,"").slice(0,30),bio:bio.trim().slice(0,180)};
-try{localStorage.setItem(PROFILE_KEY,JSON.stringify(profile));renderProfile();logActivity("Обновлён профиль участника: "+profile.displayName);$("notice").textContent="Демо-профиль сохранён на этом устройстве."}catch{$("notice").textContent="Не удалось сохранить профиль в браузере."}
-});
-$("createTeamBtn").addEventListener("click",()=>{
-const name=prompt("Название команды:");if(name===null)return;if(!name.trim()){alert("Введи название команды.");return}
-const description=prompt("Какая цель у команды?")||"";
-const starter=[{name:profile?.displayName||"Ты (владелец)",role:"owner"}];
-teams.unshift({id:Date.now().toString()+Math.random().toString(16).slice(2),name:name.trim().slice(0,60),description:description.trim().slice(0,240),members:starter});
-saveTeams();renderTeams();logActivity("Создана команда: "+name.trim());$("notice").textContent="Демо-команда создана."
-});
-$("teams").addEventListener("click",event=>{
-const button=event.target.closest("button[data-team-action]");if(!button)return;
-const team=teams.find(t=>t.id===button.dataset.id);if(!team)return;
-if(!Array.isArray(team.members))team.members=[];
-team.members=team.members.map(m=>typeof m==="string"?{name:m,role:"member"}:m);
-const canManage=team.members.some(m=>m.role==="owner"||m.role==="admin");
-if(button.dataset.teamAction==="member"&&canManage){
-const member=prompt("Имя участника для демо-приглашения:");if(member===null||!member.trim())return;
-if(team.members.some(m=>m.name.toLowerCase()===member.trim().toLowerCase())){alert("Этот участник уже есть в команде.");return}
-const roleAnswer=prompt("Роль: 1 — участник, 2 — наблюдатель, 3 — администратор","1");if(roleAnswer===null)return;
-const role=({"1":"member","2":"viewer","3":"admin"})[roleAnswer.trim()];if(!role){alert("Выбери 1, 2 или 3.");return}
-team.members.push({name:member.trim().slice(0,50),role});saveTeams();renderTeams();logActivity("Добавлен участник "+member.trim()+" в команду "+team.name+" ("+({member:"участник",viewer:"наблюдатель",admin:"администратор"})[role]+")");$("notice").textContent="Демо-приглашение добавлено в список команды."
-}
-if(button.dataset.teamAction==="role"&&canManage){
-const index=Number(button.dataset.member),member=team.members[index];if(!member||member.role==="owner")return;
-const roleAnswer=prompt("Новая роль для "+member.name+": 1 — участник, 2 — наблюдатель, 3 — администратор",({"member":"1","viewer":"2","admin":"3"})[member.role]||"1");if(roleAnswer===null)return;
-const role=({"1":"member","2":"viewer","3":"admin"})[roleAnswer.trim()];if(!role){alert("Выбери 1, 2 или 3.");return}
-member.role=role;saveTeams();renderTeams();logActivity("Изменена роль "+member.name+" в команде "+team.name);$("notice").textContent="Роль участника обновлена."
-}
-if(button.dataset.teamAction==="remove"&&canManage){
-const index=Number(button.dataset.member),member=team.members[index];if(!member||member.role==="owner")return;
-if(confirm("Удалить "+member.name+" из команды?")){team.members.splice(index,1);saveTeams();renderTeams();logActivity("Удалён участник "+member.name+" из команды "+team.name);$("notice").textContent="Участник удалён из демо-команды."}
-}
-if(button.dataset.teamAction==="delete"&&canManage&&confirm("Удалить команду «"+team.name+"»?")){teams=teams.filter(t=>t.id!==team.id);saveTeams();renderTeams();logActivity("Удалена команда: "+team.name);$("notice").textContent="Команда удалена."}
-});
-function createProject(){
-const name=prompt("Как называется проект?");if(name===null)return;if(!name.trim()){alert("Введи название проекта.");return}
-const description=prompt("Коротко опиши идею проекта:")||"";
-const category=prompt("Категория проекта:","Мой проект")||"Мой проект";
-const priorityAnswer=prompt("Приоритет проекта: 1 — высокий, 2 — средний, 3 — низкий","2");if(priorityAnswer===null)return;
-const priority=({"1":"high","2":"medium","3":"low"})[priorityAnswer.trim()];if(!priority){alert("Выбери 1, 2 или 3.");return}
-let dueDate=prompt("Срок проекта в формате ГГГГ-ММ-ДД (необязательно):","");if(dueDate===null)dueDate="";
-dueDate=dueDate.trim();if(dueDate&&!/^\d{4}-\d{2}-\d{2}$/.test(dueDate)){alert("Дата должна быть в формате ГГГГ-ММ-ДД.");return}
-if(dueDate&&Number.isNaN(new Date(dueDate+"T12:00:00").getTime())){alert("Проверь дату.");return}
-projects.unshift({id:Date.now().toString()+Math.random().toString(16).slice(2),name:name.trim().slice(0,80),description:description.trim().slice(0,300),category:category.trim().slice(0,30)||"Мой проект",priority,dueDate,tasks:[]});
-save();render();logActivity("Создан проект: "+name.trim());$("notice").textContent="Проект добавлен."
-}
+$("profileBtn").addEventListener("click",()=>{showForm("Настроить профиль","Данные сохраняются только в этом браузере.",[{name:"displayName",label:"Отображаемое имя",value:profile?.displayName||"",required:true,maxlength:50},{name:"username",label:"Имя пользователя",value:profile?.username||"",maxlength:30},{name:"bio",label:"О себе",type:"textarea",value:profile?.bio||"",maxlength:180}],"Сохранить",d=>{profile={displayName:d.displayName,username:d.username.replace(/^@/,""),bio:d.bio};try{localStorage.setItem(PROFILE_KEY,JSON.stringify(profile));renderProfile();logActivity("Обновлён профиль участника: "+profile.displayName);$("notice").textContent="Профиль сохранён."}catch{$("notice").textContent="Не удалось сохранить профиль."}})});
+$("createTeamBtn").addEventListener("click",()=>{showForm("Создать команду","Задай название и общую цель.",[{name:"name",label:"Название команды",required:true,maxlength:60},{name:"description",label:"Цель команды",type:"textarea",maxlength:240}],"Создать",d=>{teams.unshift({id:Date.now().toString()+Math.random().toString(16).slice(2),name:d.name,description:d.description,members:[{name:profile?.displayName||"Ты (владелец)",role:"owner"}]});saveTeams();renderTeams();logActivity("Создана команда: "+d.name);$("notice").textContent="Команда создана."})});
+$("teams").addEventListener("click",event=>{const button=event.target.closest("button[data-team-action]");if(!button)return;const team=teams.find(t=>t.id===button.dataset.id);if(!team)return;if(!Array.isArray(team.members))team.members=[];team.members=team.members.map(m=>typeof m==="string"?{name:m,role:"member"}:m);const canManage=team.members.some(m=>m.role==="owner"||m.role==="admin");if(button.dataset.teamAction==="member"&&canManage){showForm("Добавить участника","Демо-список; настоящее приглашение появится позже.",[{name:"name",label:"Имя участника",required:true,maxlength:50},{name:"role",label:"Роль",type:"select",value:"member",options:[{value:"member",label:"Участник"},{value:"viewer",label:"Наблюдатель"},{value:"admin",label:"Администратор"}]}],"Добавить",d=>{if(team.members.some(m=>m.name.toLowerCase()===d.name.toLowerCase())){$("notice").textContent="Участник уже существует.";return false}team.members.push({name:d.name,role:d.role});saveTeams();renderTeams();logActivity("Добавлен участник "+d.name+" в команду "+team.name);$("notice").textContent="Участник добавлен."})}if(button.dataset.teamAction==="role"&&canManage){const member=team.members[Number(button.dataset.member)];if(!member||member.role==="owner")return;showForm("Изменить роль","Выбери новую роль.",[{name:"role",label:"Роль",type:"select",value:member.role,options:[{value:"member",label:"Участник"},{value:"viewer",label:"Наблюдатель"},{value:"admin",label:"Администратор"}]}],"Сохранить",d=>{member.role=d.role;saveTeams();renderTeams();logActivity("Изменена роль "+member.name+" в команде "+team.name);$("notice").textContent="Роль изменена."})}if(button.dataset.teamAction==="remove"&&canManage){const index=Number(button.dataset.member),member=team.members[index];if(!member||member.role==="owner")return;askDelete("Удалить участника?","Удалить "+member.name+" из команды?",()=>{team.members.splice(index,1);saveTeams();renderTeams();logActivity("Удалён участник "+member.name+" из команды "+team.name);$("notice").textContent="Участник удалён."})}if(button.dataset.teamAction==="delete"&&canManage)askDelete("Удалить команду?","Команда «"+team.name+"» будет удалена.",()=>{teams=teams.filter(t=>t.id!==team.id);saveTeams();renderTeams();logActivity("Удалена команда: "+team.name);$("notice").textContent="Команда удалена."})});
+function createProject(){showForm("Создать проект","Заполни основные данные. Остальные настройки можно изменить позже.",[{name:"name",label:"Название проекта",required:true,maxlength:80,placeholder:"Например, Korri Studio"},{name:"description",label:"Описание",type:"textarea",maxlength:300},{name:"category",label:"Категория",value:"Мой проект",maxlength:30},{name:"priority",label:"Приоритет",type:"select",value:"medium",options:[{value:"high",label:"Высокий"},{value:"medium",label:"Средний"},{value:"low",label:"Низкий"}]},{name:"dueDate",label:"Срок (необязательно)",type:"date"}],"Создать",d=>{projects.unshift({id:Date.now().toString()+Math.random().toString(16).slice(2),name:d.name.slice(0,80),description:d.description.slice(0,300),category:(d.category||"Мой проект").slice(0,30),priority:d.priority,dueDate:d.dueDate,tasks:[],roadmap:[],relations:[]});save();render();logActivity("Создан проект: "+d.name);$("notice").textContent="Проект добавлен."})}
 function addProjectRelation(id){
 const p=projects.find(item=>item.id===id);if(!p)return;
 const candidates=projects.filter(item=>item.id!==id);
@@ -185,14 +160,7 @@ const p=projects.find(item=>item.id===id);if(!p||!Array.isArray(p.relations))ret
 const relation=p.relations[index];if(!relation)return;
 p.relations.splice(index,1);save();render();logActivity("Удалена связь проекта "+p.name);$("notice").textContent="Связь удалена."
 }
-function addPhase(id){
-const p=projects.find(item=>item.id===id);if(!p)return;
-const title=prompt("Название этапа:");if(title===null||!title.trim())return;
-const description=prompt("Что нужно получить на этом этапе?")||"";
-if(!Array.isArray(p.roadmap))p.roadmap=[];
-p.roadmap.push({id:Date.now().toString()+Math.random().toString(16).slice(2),title:title.trim().slice(0,80),description:description.trim().slice(0,180),done:false});
-save();render();logActivity("Добавлен этап «"+title.trim()+"» в проект "+p.name);$("notice").textContent="Этап добавлен."
-}
+function addPhase(id){const p=projects.find(item=>item.id===id);if(!p)return;showForm("Добавить этап","Разбей большую идею на понятные шаги.",[{name:"title",label:"Название этапа",required:true,maxlength:80},{name:"description",label:"Результат этапа",type:"textarea",maxlength:180}],"Добавить этап",d=>{if(!Array.isArray(p.roadmap))p.roadmap=[];p.roadmap.push({id:Date.now().toString()+Math.random().toString(16).slice(2),title:d.title,description:d.description,done:false});save();render();logActivity("Добавлен этап «"+d.title+"» в проект "+p.name);$("notice").textContent="Этап добавлен."})}
 function editPhases(id){
 const p=projects.find(item=>item.id===id);if(!p)return;
 const phases=Array.isArray(p.roadmap)?p.roadmap:[];
@@ -209,24 +177,8 @@ if(action===null)return;
 if(!action.trim()){if(confirm("Удалить этап «"+phase.title+"»?")){p.roadmap=phases.filter(x=>x.id!==phase.id);save();render();logActivity("Удалён этап из проекта "+p.name);$("notice").textContent="Этап удалён."}return}
 phase.title=action.trim().slice(0,80);save();render();logActivity("Переименован этап проекта "+p.name);$("notice").textContent="Этап обновлён."
 }
-function editProject(id){
-const p=projects.find(item=>item.id===id);if(!p)return;
-const name=prompt("Название проекта:",p.name);if(name===null)return;if(!name.trim()){alert("Название не может быть пустым.");return}
-const description=prompt("Описание проекта:",p.description||"");if(description===null)return;
-const category=prompt("Категория:",p.category||"Мой проект");if(category===null)return;
-const priorityAnswer=prompt("Приоритет: 1 — высокий, 2 — средний, 3 — низкий",({"high":"1","medium":"2","low":"3"})[p.priority||"medium"]);if(priorityAnswer===null)return;
-const priority=({"1":"high","2":"medium","3":"low"})[priorityAnswer.trim()];if(!priority){alert("Выбери 1, 2 или 3.");return}
-let dueDate=prompt("Срок в формате ГГГГ-ММ-ДД. Оставь пустым, чтобы убрать срок.",p.dueDate||"");if(dueDate===null)return;dueDate=dueDate.trim();
-if(dueDate&&!/^\d{4}-\d{2}-\d{2}$/.test(dueDate)){alert("Дата должна быть в формате ГГГГ-ММ-ДД.");return}
-if(dueDate&&Number.isNaN(new Date(dueDate+"T12:00:00").getTime())){alert("Проверь дату.");return}
-p.name=name.trim().slice(0,80);p.description=description.trim().slice(0,300);p.category=category.trim().slice(0,30)||"Мой проект";p.priority=priority;p.dueDate=dueDate;
-save();render();logActivity("Обновлены настройки проекта: "+p.name);$("notice").textContent="Настройки проекта обновлены."
-}
-function addTask(id){
-const project=projects.find(p=>p.id===id);if(!project)return;
-const title=prompt("Что нужно сделать?");if(title===null||!title.trim())return;
-project.tasks.push({id:Date.now().toString(),title:title.trim().slice(0,120),done:false});save();render();logActivity("Добавлена задача в проект "+project.name+": "+title.trim());$("notice").textContent="Задача добавлена."
-}
+function editProject(id){const p=projects.find(item=>item.id===id);if(!p)return;showForm("Настроить проект","Измени основные параметры проекта.",[{name:"name",label:"Название",value:p.name,required:true,maxlength:80},{name:"description",label:"Описание",type:"textarea",value:p.description||"",maxlength:300},{name:"category",label:"Категория",value:p.category||"Мой проект",maxlength:30},{name:"priority",label:"Приоритет",type:"select",value:p.priority||"medium",options:[{value:"high",label:"Высокий"},{value:"medium",label:"Средний"},{value:"low",label:"Низкий"}]},{name:"dueDate",label:"Срок (пусто — без срока)",type:"date",value:p.dueDate||""}],"Сохранить",d=>{p.name=d.name.slice(0,80);p.description=d.description.slice(0,300);p.category=(d.category||"Мой проект").slice(0,30);p.priority=d.priority;p.dueDate=d.dueDate;save();render();logActivity("Обновлены настройки проекта: "+p.name);$("notice").textContent="Настройки проекта обновлены."})}
+function addTask(id){const project=projects.find(p=>p.id===id);if(!project)return;showForm("Новая задача","Добавь действие в план проекта.",[{name:"title",label:"Название задачи",required:true,maxlength:120,placeholder:"Что нужно сделать?"}],"Добавить",d=>{project.tasks.push({id:Date.now().toString()+Math.random().toString(16).slice(2),title:d.title.slice(0,120),done:false});save();render();logActivity("Добавлена задача в проект "+project.name+": "+d.title);$("notice").textContent="Задача добавлена."})}
 function viewTasks(id){
 const project=projects.find(p=>p.id===id);if(!project)return;
 if(!project.tasks.length){alert("В этом проекте пока нет задач. Нажми «Добавить задачу».");return}
