@@ -132,6 +132,7 @@ const previous=activity;
 activity=[{id:Date.now().toString()+Math.random().toString(16).slice(2),message:String(message).slice(0,180),time:new Date().toISOString()},...activity].slice(0,40);
 if(!writeLocalData(ACTIVITY_KEY,activity,"историю активности")){activity=previous;renderActivity();return false}
 renderActivity();
+renderProfile();
 return true;
 }
 function renderActivity(){
