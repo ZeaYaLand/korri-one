@@ -294,7 +294,7 @@ $("projects").addEventListener("click",event=>{const button=event.target.closest
 
 // Вкладки приложения: показываем только выбранный раздел.
 const tabSections={
-  home:[$("#home .hero-panel"),$(".stats")],
+  home:[document.querySelector("#home .hero-panel"),document.querySelector("#home .stats")],
   projects:[document.querySelector('[data-tab-heading="projects"]'),$("#projectsSection"),$("#projects")],
   teams:[document.querySelector('[data-tab-heading="teams"]'),$("#teamsSection")],
   activity:[document.querySelector('[data-tab-heading="activity"]'),$("#activitySection")],
