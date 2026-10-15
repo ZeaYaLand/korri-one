@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#09090f">
+<title>KORRI ONE — Твоя вселенная проектов</title>
+<style>
+:root{--bg:#09090f;--panel:#12121d;--purple:#a855f7;--text:#f4f0ff;--muted:#9994ad;--border:#29233b}
+*{box-sizing:border-box}
+body{margin:0;background:radial-gradient(ellipse at top,#211033 0%,var(--bg) 48%);color:var(--text);font-family:Arial,sans-serif;min-height:100vh}
+header{padding:22px 6%;display:flex;justify-content:space-between;align-items:center;border-bottom:1px solid var(--border)}
+.logo{font-size:22px;font-weight:900;letter-spacing:2px}.logo span,h1 span{color:var(--purple)}
+.status{color:#c4a4ff;font-size:12px}
+main{max-width:1050px;margin:auto;padding:35px 20px}
+.tag{color:#c4a4ff;font-size:12px;letter-spacing:3px;text-transform:uppercase}
+h1{font-size:clamp(32px,7vw,58px);margin:14px 0;line-height:1.08}
+.subtitle{color:var(--muted);line-height:1.6;max-width:560px}
+.actions{display:flex;gap:10px;flex-wrap:wrap;margin:25px 0 35px}
+button{border:1px solid var(--border);border-radius:10px;padding:12px 16px;background:#191522;color:var(--text);font-size:14px;cursor:pointer}
+button.primary{background:var(--purple);color:#fff;border-color:var(--purple);font-weight:bold}
+button:hover{filter:brightness(1.15)}
+.stats{display:flex;gap:12px;flex-wrap:wrap;margin-bottom:32px}
+.stat{background:#11101a;border:1px solid var(--border);border-radius:12px;padding:15px 20px;flex:1;min-width:110px}
+.stat strong{display:block;font-size:25px;margin-bottom:5px}.stat small{color:var(--muted)}
+.section-title{display:flex;justify-content:space-between;align-items:center;gap:12px}
+.section-title h2{font-size:20px}
+.projects{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:14px}
+.project{background:linear-gradient(145deg,#171322,#0e0d15);border:1px solid var(--border);border-radius:15px;padding:18px;min-width:0}
+.project h3{margin:12px 0 8px;overflow-wrap:anywhere}
+.project p{color:var(--muted);font-size:14px;line-height:1.5;overflow-wrap:anywhere}
+.project-top{display:flex;justify-content:space-between;align-items:center;gap:8px}
+.pill{color:#d6b8ff;background:#2a1940;border-radius:20px;padding:6px 9px;font-size:11px}
+.project small{color:var(--muted)}
+.project-buttons{display:flex;gap:8px;margin-top:15px;flex-wrap:wrap}
+.project-buttons button{padding:9px 11px;font-size:12px}
+.empty{border:1px dashed #44335c;border-radius:15px;padding:35px 18px;text-align:center;color:var(--muted);grid-column:1/-1}
+footer{padding:25px;text-align:center;color:#777188;font-size:12px;border-top:1px solid var(--border);margin-top:45px}
+#notice{color:#d8c2ff;font-size:13px;min-height:20px;margin-top:12px}
+@media(max-width:500px){header{padding:18px}main{padding:28px 16px}.status{font-size:10px}}
+</style>
+</head>
+<body>
+<header><div class="logo">KORRI <span>ONE</span></div><div class="status">● ПРОТОТИП</div></header>
+<main>
+<div class="tag">Твоя идея. Твой мир.</div>
+<h1>Создавай больше.<br><span>Меняй правила.</span></h1>
+<p class="subtitle">Пространство, где идеи становятся проектами, люди объединяются в команды, а каждый шаг приближает к результату.</p>
+<div class="actions"><button class="primary" id="createBtn">＋ Создать проект</button><button id="demoBtn">Загрузить демо-проекты</button></div>
+<div class="stats">
+<div class="stat"><strong id="projectCount">0</strong><small>Проектов</small></div>
+<div class="stat"><strong id="taskCount">0</strong><small>Всего задач</small></div>
+<div class="stat"><strong id="doneCount">0</strong><small>Выполнено</small></div>
+</div>
+<div class="section-title"><h2>Твои проекты</h2><span class="tag">МОЯ ВСЕЛЕННАЯ</span></div>
+<div class="projects" id="projects"></div><div id="notice" role="status"></div>
+</main>
+<footer>KORRI ONE © 2026 · Создано для больших идей</footer>
+<script>
+const KEY="korri-one-projects-v1";
+const $=id=>document.getElementById(id);
+let projects=[];
+try{projects=JSON.parse(localStorage.getItem(KEY)||"[]");if(!Array.isArray(projects))projects=[]}catch{projects=[]}
+function save(){try{localStorage.setItem(KEY,JSON.stringify(projects));return true}catch{$("notice").textContent="Не удалось сохранить данные в этом браузере.";return false}}
+function escapeHTML(value){return String(value).replace(/[&<>"']/g,char=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[char]))}
+function render(){
+$("projectCount").textContent=projects.length;
+$("taskCount").textContent=projects.reduce((sum,p)=>sum+p.tasks.length,0);
+$("doneCount").textContent=projects.reduce((sum,p)=>sum+p.tasks.filter(t=>t.done).length,0);
+if(!projects.length){$("projects").innerHTML='<div class="empty">Пока здесь пусто.<br>Создай первый проект и начни свою историю.</div>';return}
+$("projects").innerHTML=projects.map(p=>{const done=p.tasks.filter(t=>t.done).length;return `<article class="project"><div class="project-top"><span class="pill">${escapeHTML(p.category)}</span><small>${done}/${p.tasks.length} задач</small></div><h3>${escapeHTML(p.name)}</h3><p>${escapeHTML(p.description||"Автор пока не добавил описание.")}</p><div class="project-buttons"><button data-action="task" data-id="${p.id}">＋ Добавить задачу</button><button data-action="view" data-id="${p.id}">Задачи</button></div></article>`}).join("")
+}
+function createProject(){
+const name=prompt("Как называется проект?");if(name===null)return;if(!name.trim()){alert("Введи название проекта.");return}
+const description=prompt("Коротко опиши идею проекта:")||"";
+const category=prompt("Категория проекта:","Мой проект")||"Мой проект";
+projects.unshift({id:Date.now().toString()+Math.random().toString(16).slice(2),name:name.trim().slice(0,80),description:description.trim().slice(0,300),category:category.trim().slice(0,30)||"Мой проект",tasks:[]});
+save();render();$("notice").textContent="Проект добавлен."
+}
+function addTask(id){
+const project=projects.find(p=>p.id===id);if(!project)return;
+const title=prompt("Что нужно сделать?");if(title===null||!title.trim())return;
+project.tasks.push({id:Date.now().toString(),title:title.trim().slice(0,120),done:false});save();render();$("notice").textContent="Задача добавлена."
+}
+function viewTasks(id){
+const project=projects.find(p=>p.id===id);if(!project)return;
+if(!project.tasks.length){alert("В этом проекте пока нет задач. Нажми «Добавить задачу».");return}
+const list=project.tasks.map((t,i)=>`${i+1}. ${t.done?"[ГОТОВО]":"[В РАБОТЕ]"} ${t.title}`).join("\n");
+const answer=prompt("Задачи проекта:\n"+list+"\n\nВведи номер задачи, чтобы переключить её статус:");
+if(answer===null)return;const index=Number(answer)-1;
+if(!Number.isInteger(index)||index<0||index>=project.tasks.length){alert("Такого номера нет.");return}
+project.tasks[index].done=!project.tasks[index].done;save();render();$("notice").textContent="Статус задачи обновлён."
+}
+$("createBtn").addEventListener("click",createProject);
+$("demoBtn").addEventListener("click",()=>{
+if(projects.some(p=>p.id==="demo-one")){$("notice").textContent="Демо-проекты уже добавлены.";return}
+projects.push({id:"demo-one",name:"Korri Studio",description:"Пространство для творческих идей и новых проектов.",category:"Творчество",tasks:[{id:"d1",title:"Продумать концепцию",done:true},{id:"d2",title:"Собрать команду",done:false}]},{id:"demo-two",name:"Next Level",description:"План развития идеи от первого шага до результата.",category:"Развитие",tasks:[{id:"d3",title:"Составить дорожную карту",done:false}]});
+save();render();$("notice").textContent="Демо-проекты добавлены."
+});
+$("projects").addEventListener("click",event=>{const button=event.target.closest("button[data-action]");if(!button)return;if(button.dataset.action==="task")addTask(button.dataset.id);if(button.dataset.action==="view")viewTasks(button.dataset.id)});
+render();
+</script>
+</body>
+</html>
