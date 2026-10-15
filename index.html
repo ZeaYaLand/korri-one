@@ -154,7 +154,7 @@ button:disabled{opacity:.55;cursor:not-allowed;filter:none}
 </section>
 <section class="tab-page" data-tab-page="activity">
 <section class="tab-heading" data-tab-heading="activity"><span class="tag">РАБОЧЕЕ ПРОСТРАНСТВО / 04</span><h1>Журнал <span>активности</span></h1><p>Следи за изменениями и последними действиями.</p></section>
-<section class="panel" id="activitySection"><div class="panel-head"><h2>История активности</h2><button id="clearActivityBtn">Очистить историю</button></div><p class="profile-line">Здесь отображаются последние действия в этом браузере.</p><div class="activity-list" id="activityList"></div></section>
+<section class="panel" id="activitySection"><div class="panel-head"><h2>История активности</h2><button id="clearActivityBtn">Очистить историю</button></div><p class="profile-line">Здесь отображаются последние действия в этом браузере.</p><div class="team-toolbar"><input class="search" id="activitySearch" type="search" placeholder="Поиск по истории…" aria-label="Поиск по истории активности"><select id="activityTypeFilter" aria-label="Фильтр по типу события"><option value="all">Все события</option><option value="project">Проекты</option><option value="task">Задачи</option><option value="team">Команды</option><option value="profile">Профиль</option><option value="other">Другие</option></select><button id="resetActivityFilters">Сбросить</button></div><p class="profile-line" id="activityResults" aria-live="polite"></p><div class="activity-list" id="activityList"></div></section>
 </section>
 <div id="notice" role="status"></div><div class="modal-backdrop" id="modalBackdrop"><section class="modal" role="dialog" aria-modal="true" aria-labelledby="modalTitle"><h2 id="modalTitle"></h2><p class="modal-desc" id="modalDesc"></p><form id="modalForm"><div id="modalFields"></div><div class="modal-actions"><button type="button" id="modalCancel">Отмена</button><button class="primary" type="submit" id="modalSubmit">Сохранить</button></div></form></section></div>
 </main>
@@ -253,10 +253,31 @@ renderActivity();
 renderProfile();
 return true;
 }
-function renderActivity(){
-if(!activity.length){$("activityList").innerHTML='<div class="empty">История пока пуста. Создай проект, задачу или команду.</div>';return}
-$("activityList").innerHTML=activity.map(item=>{const d=new Date(item.time);const date=Number.isNaN(d.getTime())?"":d.toLocaleString("ru-RU",{day:"2-digit",month:"short",hour:"2-digit",minute:"2-digit"});return `<div class="activity-item"><span class="activity-dot"></span><div class="activity-text">${escapeHTML(item.message)}<span class="activity-time">${escapeHTML(date)}</span></div></div>`}).join("");
+function activityCategory(message){
+const text=String(message||"").toLocaleLowerCase("ru-RU");
+if(/задач|этап|дорожн|вклад/.test(text))return "task";
+if(/команд|участник|роль|наблюдател|администратор|владелец/.test(text))return "team";
+if(/профил|никнейм|специализац|интерес|описание/.test(text))return "profile";
+if(/проект|ответвлен|связ/.test(text))return "project";
+return "other";
 }
+function renderActivity(){
+const search=($("activitySearch")?.value||"").trim().toLocaleLowerCase("ru-RU");
+const type=$("activityTypeFilter")?.value||"all";
+const filtered=activity.filter(item=>{
+const message=String(item.message||"");
+const matchesSearch=!search||message.toLocaleLowerCase("ru-RU").includes(search);
+const matchesType=type==="all"||activityCategory(message)===type;
+return matchesSearch&&matchesType;
+});
+$("activityResults").textContent=`Показано: ${filtered.length} из ${activity.length}`;
+if(!activity.length){$("activityList").innerHTML='<div class="empty">История пока пуста. Создай проект, задачу или команду.</div>';return}
+if(!filtered.length){$("activityList").innerHTML='<div class="empty">Ничего не найдено. Измени запрос или сбрось фильтры.</div>';return}
+$("activityList").innerHTML=filtered.map(item=>{const d=new Date(item.time);const date=Number.isNaN(d.getTime())?"":d.toLocaleString("ru-RU",{day:"2-digit",month:"short",hour:"2-digit",minute:"2-digit"});const category=activityCategory(item.message);const labels={project:"Проект",task:"Задача / этап",team:"Команда",profile:"Профиль",other:"Другое"};return `<div class="activity-item"><span class="activity-dot"></span><div class="activity-text">${escapeHTML(item.message)}<span class="activity-time">${escapeHTML(date)} · ${labels[category]}</span></div></div>`}).join("");
+}
+$("activitySearch").addEventListener("input",renderActivity);
+$("activityTypeFilter").addEventListener("change",renderActivity);
+$("resetActivityFilters").addEventListener("click",()=>{$("activitySearch").value="";$("activityTypeFilter").value="all";renderActivity()});
 $("clearActivityBtn").addEventListener("click",()=>{if(!activity.length)return;askDelete("Очистить историю?","Все записи активности в этом браузере будут удалены.",()=>{const previous=activity;activity=[];if(!writeLocalData(ACTIVITY_KEY,activity,"историю активности")){activity=previous;renderActivity();renderProfile();return false}renderActivity();renderProfile();$("notice").textContent="История очищена.";return true})});
 function renderProfile(){
 const name=profile?.displayName||"Новый участник";
