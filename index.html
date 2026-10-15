@@ -110,10 +110,10 @@ return '<label for="'+id+'">'+escapeHTML(f.label)+'</label>'+control}).join("");
 backdrop.classList.add("open");const first=host.querySelector("input,textarea,select");if(first)first.focus();
 const close=()=>{backdrop.classList.remove("open");form.onsubmit=null};
 $("modalCancel").onclick=close;backdrop.onclick=e=>{if(e.target===backdrop)close()};
-form.onsubmit=e=>{e.preventDefault();const data={};fields.forEach(f=>{const el=form.elements.namedItem(f.name);data[f.name]=el?el.value.trim():""});if(fields.some(f=>f.required&&!data[f.name]))return;const result=onSubmit(data);if(result!==false)close()};
+form.onsubmit=e=>{e.preventDefault();const submit=$("modalSubmit");if(submit.disabled)return;const data={};fields.forEach(f=>{const el=form.elements.namedItem(f.name);data[f.name]=el?el.value.trim():""});if(fields.some(f=>f.required&&!data[f.name]))return;submit.disabled=true;try{const result=onSubmit(data);if(result!==false)close();else submit.disabled=false}catch(error){submit.disabled=false;$("notice").textContent="Не удалось выполнить действие. Проверь данные и попробуй ещё раз.";console.error(error)}};
 }
 function askDelete(title,description,action){
-showForm(title,description,[],"Удалить",()=>{action();return true});
+showForm(title,description,[],"Удалить",()=>{const result=action();return result!==false});
 $("modalCancel").onclick=()=>{$("modalBackdrop").classList.remove("open");$("modalForm").onsubmit=null};
 }
 
