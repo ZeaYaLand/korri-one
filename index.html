@@ -39,7 +39,7 @@ footer{padding:25px;text-align:center;color:#777188;font-size:12px;border-top:1p
 #notice{color:#d8c2ff;font-size:13px;min-height:20px;margin-top:12px}
 @media(max-width:500px){header{padding:18px}main{padding:28px 16px}.status{font-size:10px}}
 
-.navbar{display:flex;gap:8px;flex-wrap:wrap;padding:12px 6%;border-bottom:1px solid var(--border);background:#0c0b13;position:sticky;top:0;z-index:5}.navbar a{color:var(--muted);text-decoration:none;padding:9px 12px;border-radius:9px;font-size:13px;border:1px solid transparent}.navbar a:focus,.navbar a:hover{color:var(--text);background:#211633;border-color:#39264f}.modal-backdrop{position:fixed;inset:0;background:rgba(4,3,10,.78);backdrop-filter:blur(8px);z-index:20;display:none;align-items:center;justify-content:center;padding:16px}.modal-backdrop.open{display:flex}.modal{width:min(100%,520px);max-height:90vh;overflow:auto;background:#12101c;border:1px solid #493064;border-radius:18px;padding:20px;box-shadow:0 24px 90px #0009}.modal h2{margin:0 0 8px;font-size:22px}.modal-desc{color:var(--muted);font-size:13px;line-height:1.5;margin:0 0 16px}.modal label{display:block;font-size:13px;color:#d8c2ff;margin:12px 0 6px}.modal input,.modal textarea,.modal select{width:100%;background:#0b0a12;border:1px solid var(--border);border-radius:10px;padding:12px;color:var(--text);font:inherit}.modal textarea{min-height:92px;resize:vertical}.modal-actions{display:flex;justify-content:flex-end;gap:8px;flex-wrap:wrap;margin-top:18px}@media(max-width:560px){.navbar{padding:10px 12px;gap:5px}.navbar a{font-size:12px;padding:8px}.modal{padding:16px}}
+.tab-hidden{display:none!important}.navbar a[aria-current="page"]{color:#fff;background:#29183c;border-color:#8b5cf6;box-shadow:inset 0 -2px #c084fc}.navbar{display:flex;gap:8px;flex-wrap:wrap;padding:12px 6%;border-bottom:1px solid var(--border);background:#0c0b13;position:sticky;top:0;z-index:5}.navbar a{color:var(--muted);text-decoration:none;padding:9px 12px;border-radius:9px;font-size:13px;border:1px solid transparent}.navbar a:focus,.navbar a:hover{color:var(--text);background:#211633;border-color:#39264f}.modal-backdrop{position:fixed;inset:0;background:rgba(4,3,10,.78);backdrop-filter:blur(8px);z-index:20;display:none;align-items:center;justify-content:center;padding:16px}.modal-backdrop.open{display:flex}.modal{width:min(100%,520px);max-height:90vh;overflow:auto;background:#12101c;border:1px solid #493064;border-radius:18px;padding:20px;box-shadow:0 24px 90px #0009}.modal h2{margin:0 0 8px;font-size:22px}.modal-desc{color:var(--muted);font-size:13px;line-height:1.5;margin:0 0 16px}.modal label{display:block;font-size:13px;color:#d8c2ff;margin:12px 0 6px}.modal input,.modal textarea,.modal select{width:100%;background:#0b0a12;border:1px solid var(--border);border-radius:10px;padding:12px;color:var(--text);font:inherit}.modal textarea{min-height:92px;resize:vertical}.modal-actions{display:flex;justify-content:flex-end;gap:8px;flex-wrap:wrap;margin-top:18px}@media(max-width:560px){.navbar{padding:10px 12px;gap:5px}.navbar a{font-size:12px;padding:8px}.modal{padding:16px}}
 
 .profile-hero{display:flex;align-items:center;gap:16px;margin:20px 0}.profile-avatar{width:76px;height:76px;flex-shrink:0;display:grid;place-items:center;border-radius:22px;background:linear-gradient(145deg,#8b5cf6,#32134f);border:1px solid #c4a4ff;color:white;font-size:28px;font-weight:900;box-shadow:0 0 28px #a855f733}.profile-identity{min-width:0}.profile-identity h2{margin:6px 0;font-size:clamp(20px,4vw,28px);overflow-wrap:anywhere}.profile-identity p{margin:4px 0;color:var(--muted);font-size:13px;overflow-wrap:anywhere}.profile-details{display:flex;gap:7px;flex-wrap:wrap;margin:12px 0}.profile-stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(105px,1fr));gap:9px;margin:18px 0}.profile-stat{background:#0c0b13;border:1px solid var(--border);border-radius:11px;padding:12px}.profile-stat strong{display:block;font-size:22px;margin-bottom:4px}.profile-stat span{font-size:11px;color:var(--muted)}.profile-subhead{display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap;margin:22px 0 10px}.profile-subhead h3{margin:0;font-size:16px}.achievement-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(145px,1fr));gap:9px}.achievement{padding:13px;background:linear-gradient(145deg,#171322,#0d0c14);border:1px solid #39264f;border-radius:12px;min-width:0}.achievement.locked{opacity:.5;filter:saturate(.45)}.achievement-icon{font-size:24px;margin-bottom:8px}.achievement strong{display:block;font-size:13px;margin-bottom:5px}.achievement p{margin:0;color:var(--muted);font-size:11px;line-height:1.45}.achievement-status{display:inline-block;margin-top:9px;color:#c4a4ff;font-size:10px}.profile-note{font-size:11px;line-height:1.5;color:var(--muted);margin-top:18px}
 
@@ -274,6 +274,35 @@ if(!save())return false;render();$("notice").textContent="Демо-проект�
 $("searchInput").addEventListener("input",render);
 $("modalFields").addEventListener("click",event=>{const button=event.target.closest("button[data-project-page-action=\"contribution\"]");if(button){$("modalBackdrop").classList.remove("open");$("modalSubmit").style.display="";$("modalCancel").textContent="Отмена";addContribution(button.dataset.id)}});
 $("projects").addEventListener("click",event=>{const button=event.target.closest("button[data-action]");if(!button)return;const project=projects.find(p=>p.id===button.dataset.id);if(button.dataset.action==="page")openProjectPage(button.dataset.id);if(button.dataset.action==="contribution")addContribution(button.dataset.id);if(button.dataset.action==="task")addTask(button.dataset.id);if(button.dataset.action==="edit")editProject(button.dataset.id);if(button.dataset.action==="relation-add")addProjectRelation(button.dataset.id);if(button.dataset.action==="fork")forkProject(button.dataset.id);if(button.dataset.action==="relation-remove")removeProjectRelation(button.dataset.id,Number(button.dataset.relation));if(button.dataset.action==="phase-add")addPhase(button.dataset.id);if(button.dataset.action==="phase-edit")editPhases(button.dataset.id);if(button.dataset.action==="phase-toggle"&&project){const phase=(project.roadmap||[]).find(x=>x.id===button.dataset.phase);if(phase){phase.done=!phase.done;if(!save())return false;render();logActivity((phase.done?"Завершён этап: ":"Этап снова в работе: ")+phase.title);$("notice").textContent="Этап обновлён."}}if(button.dataset.action==="toggle"&&project){const task=project.tasks.find(t=>t.id===button.dataset.task);if(task){task.done=!task.done;if(!save())return false;render();logActivity((task.done?"Выполнена задача: ":"Задача возвращена в работу: ")+task.title);$("notice").textContent="Статус задачи обновлён."}}if(button.dataset.action==="delete"&&project)askDelete("Удалить проект?","Проект «"+project.name+"» и его задачи будут удалены.",()=>{const removedId=project.id;projects=projects.filter(p=>p.id!==removedId);projects.forEach(p=>{p.relations=(p.relations||[]).filter(r=>r.targetId!==removedId);if(p.parentProjectId===removedId)delete p.parentProjectId});if(!save())return false;render();renderProfile();logActivity("Удалён проект: "+project.name);$("notice").textContent="Проект удалён."});});
+
+// Вкладки приложения: показываем только выбранный раздел.
+const tabSections={
+  home:[$("#home .hero-panel"),$(".stats")],
+  projects:[$(".stats"),$("#projectsSection"),$("#projects")],
+  teams:[$("#teamsSection")],
+  activity:[$("#activitySection")],
+  profile:[$("#profileSection")]
+};
+function activateTab(name,scroll=true){
+  if(!tabSections[name])name="home";
+  Object.entries(tabSections).forEach(([key,elements])=>{
+    elements.forEach(element=>{if(element)element.classList.toggle("tab-hidden",key!==name)});
+  });
+  document.querySelectorAll(".navbar a").forEach(link=>{
+    const active=link.getAttribute("href")==="#"+({home:"home",projects:"projectsSection",teams:"teamsSection",activity:"activitySection",profile:"profileSection"}[name]);
+    if(active)link.setAttribute("aria-current","page");else link.removeAttribute("aria-current");
+  });
+  document.body.dataset.activeTab=name;
+  if(scroll)window.scrollTo({top:0,behavior:matchMedia("(prefers-reduced-motion: reduce)").matches?"auto":"smooth"});
+}
+document.querySelector(".navbar").addEventListener("click",event=>{
+  const link=event.target.closest("a[href^=\"#\"]");
+  if(!link)return;
+  const tabs={"#home":"home","#projectsSection":"projects","#teamsSection":"teams","#activitySection":"activity","#profileSection":"profile"};
+  const tab=tabs[link.getAttribute("href")];
+  if(tab){event.preventDefault();activateTab(tab);}
+});
+activateTab("home",false);
 render();renderProfile();renderTeams();renderActivity();
 
 </script>
