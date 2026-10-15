@@ -42,6 +42,8 @@ footer{padding:25px;text-align:center;color:#777188;font-size:12px;border-top:1p
 .navbar{display:flex;gap:8px;flex-wrap:wrap;padding:12px 6%;border-bottom:1px solid var(--border);background:#0c0b13;position:sticky;top:0;z-index:5}.navbar a{color:var(--muted);text-decoration:none;padding:9px 12px;border-radius:9px;font-size:13px;border:1px solid transparent}.navbar a:focus,.navbar a:hover{color:var(--text);background:#211633;border-color:#39264f}.modal-backdrop{position:fixed;inset:0;background:rgba(4,3,10,.78);backdrop-filter:blur(8px);z-index:20;display:none;align-items:center;justify-content:center;padding:16px}.modal-backdrop.open{display:flex}.modal{width:min(100%,520px);max-height:90vh;overflow:auto;background:#12101c;border:1px solid #493064;border-radius:18px;padding:20px;box-shadow:0 24px 90px #0009}.modal h2{margin:0 0 8px;font-size:22px}.modal-desc{color:var(--muted);font-size:13px;line-height:1.5;margin:0 0 16px}.modal label{display:block;font-size:13px;color:#d8c2ff;margin:12px 0 6px}.modal input,.modal textarea,.modal select{width:100%;background:#0b0a12;border:1px solid var(--border);border-radius:10px;padding:12px;color:var(--text);font:inherit}.modal textarea{min-height:92px;resize:vertical}.modal-actions{display:flex;justify-content:flex-end;gap:8px;flex-wrap:wrap;margin-top:18px}@media(max-width:560px){.navbar{padding:10px 12px;gap:5px}.navbar a{font-size:12px;padding:8px}.modal{padding:16px}}
 
 .profile-hero{display:flex;align-items:center;gap:16px;margin:20px 0}.profile-avatar{width:76px;height:76px;flex-shrink:0;display:grid;place-items:center;border-radius:22px;background:linear-gradient(145deg,#8b5cf6,#32134f);border:1px solid #c4a4ff;color:white;font-size:28px;font-weight:900;box-shadow:0 0 28px #a855f733}.profile-identity{min-width:0}.profile-identity h2{margin:6px 0;font-size:clamp(20px,4vw,28px);overflow-wrap:anywhere}.profile-identity p{margin:4px 0;color:var(--muted);font-size:13px;overflow-wrap:anywhere}.profile-details{display:flex;gap:7px;flex-wrap:wrap;margin:12px 0}.profile-stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(105px,1fr));gap:9px;margin:18px 0}.profile-stat{background:#0c0b13;border:1px solid var(--border);border-radius:11px;padding:12px}.profile-stat strong{display:block;font-size:22px;margin-bottom:4px}.profile-stat span{font-size:11px;color:var(--muted)}.profile-subhead{display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap;margin:22px 0 10px}.profile-subhead h3{margin:0;font-size:16px}.achievement-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(145px,1fr));gap:9px}.achievement{padding:13px;background:linear-gradient(145deg,#171322,#0d0c14);border:1px solid #39264f;border-radius:12px;min-width:0}.achievement.locked{opacity:.5;filter:saturate(.45)}.achievement-icon{font-size:24px;margin-bottom:8px}.achievement strong{display:block;font-size:13px;margin-bottom:5px}.achievement p{margin:0;color:var(--muted);font-size:11px;line-height:1.45}.achievement-status{display:inline-block;margin-top:9px;color:#c4a4ff;font-size:10px}.profile-note{font-size:11px;line-height:1.5;color:var(--muted);margin-top:18px}
+
+.backup-actions{margin:14px 0 8px}.backup-actions button{flex:1}
 </style>
 </head>
 <body>
@@ -58,7 +60,7 @@ footer{padding:25px;text-align:center;color:#777188;font-size:12px;border-top:1p
 <div class="stat"><strong id="doneCount">0</strong><small>Выполнено</small></div>
 </div>
 <div class="section-title" id="projectsSection"><h2>Твои проекты</h2><span class="tag">МОЯ ВСЕЛЕННАЯ</span><input class="search" id="searchInput" type="search" placeholder="Поиск по проектам…" aria-label="Поиск по проектам"></div>
-<div class="projects" id="projects"></div><section class="panel" id="teamsSection"><div class="panel-head"><h2>Команды</h2><button id="createTeamBtn" class="primary">＋ Создать команду</button></div><p class="profile-line">Объединяй людей вокруг общей идеи. Сейчас команды работают в демо-режиме на этом устройстве.</p><div class="teams" id="teams"></div></section><section class="panel" id="activitySection"><div class="panel-head"><h2>История активности</h2><button id="clearActivityBtn">Очистить историю</button></div><p class="profile-line">Здесь отображаются последние действия в этом браузере.</p><div class="activity-list" id="activityList"></div></section><div id="notice" role="status"></div><div class="modal-backdrop" id="modalBackdrop"><section class="modal" role="dialog" aria-modal="true" aria-labelledby="modalTitle"><h2 id="modalTitle"></h2><p class="modal-desc" id="modalDesc"></p><form id="modalForm"><div id="modalFields"></div><div class="modal-actions"><button type="button" id="modalCancel">Отмена</button><button class="primary" type="submit" id="modalSubmit">Сохранить</button></div></form></section></div>
+<div class="projects" id="projects"></div><section class="panel" id="teamsSection"><div class="panel-head"><h2>Команды</h2><button id="createTeamBtn" class="primary">＋ Создать команду</button></div><p class="profile-line">Объединяй людей вокруг общей идеи. Сейчас команды работают в демо-режиме на этом устройстве.</p><div class="teams" id="teams"></div></section><section class="panel" id="backupSection"><div class="panel-head"><h2>Резервная копия</h2><span class="meta-chip">Локальные данные</span></div><p class="profile-line">Сохрани проекты, задачи, команды, профиль и историю в файл. Если очистишь данные браузера или сменишь устройство, резервную копию можно будет восстановить.</p><div class="actions backup-actions"><button class="primary" id="exportBackupBtn">↓ Скачать копию</button><button id="importBackupBtn">↑ Восстановить из файла</button><input id="backupFileInput" type="file" accept="application/json,.json" hidden></div><p class="profile-note">Файл может содержать личные заметки и названия проектов. Храни его в безопасном месте. Восстановление заменит текущие данные на данные из файла.</p></section><section class="panel" id="activitySection"><div class="panel-head"><h2>История активности</h2><button id="clearActivityBtn">Очистить историю</button></div><p class="profile-line">Здесь отображаются последние действия в этом браузере.</p><div class="activity-list" id="activityList"></div></section><div id="notice" role="status"></div><div class="modal-backdrop" id="modalBackdrop"><section class="modal" role="dialog" aria-modal="true" aria-labelledby="modalTitle"><h2 id="modalTitle"></h2><p class="modal-desc" id="modalDesc"></p><form id="modalForm"><div id="modalFields"></div><div class="modal-actions"><button type="button" id="modalCancel">Отмена</button><button class="primary" type="submit" id="modalSubmit">Сохранить</button></div></form></section></div>
 </main>
 <footer>KORRI ONE © 2026 · Создано для больших идей</footer>
 <script>
@@ -203,6 +205,49 @@ $("searchInput").addEventListener("input",render);
 $("modalFields").addEventListener("click",event=>{const button=event.target.closest("button[data-project-page-action=\"contribution\"]");if(button){$("modalBackdrop").classList.remove("open");$("modalSubmit").style.display="";$("modalCancel").textContent="Отмена";addContribution(button.dataset.id)}});
 $("projects").addEventListener("click",event=>{const button=event.target.closest("button[data-action]");if(!button)return;const project=projects.find(p=>p.id===button.dataset.id);if(button.dataset.action==="page")openProjectPage(button.dataset.id);if(button.dataset.action==="contribution")addContribution(button.dataset.id);if(button.dataset.action==="task")addTask(button.dataset.id);if(button.dataset.action==="edit")editProject(button.dataset.id);if(button.dataset.action==="relation-add")addProjectRelation(button.dataset.id);if(button.dataset.action==="fork")forkProject(button.dataset.id);if(button.dataset.action==="relation-remove")removeProjectRelation(button.dataset.id,Number(button.dataset.relation));if(button.dataset.action==="phase-add")addPhase(button.dataset.id);if(button.dataset.action==="phase-edit")editPhases(button.dataset.id);if(button.dataset.action==="phase-toggle"&&project){const phase=(project.roadmap||[]).find(x=>x.id===button.dataset.phase);if(phase){phase.done=!phase.done;save();render();logActivity((phase.done?"Завершён этап: ":"Этап снова в работе: ")+phase.title);$("notice").textContent="Этап обновлён."}}if(button.dataset.action==="toggle"&&project){const task=project.tasks.find(t=>t.id===button.dataset.task);if(task){task.done=!task.done;save();render();logActivity((task.done?"Выполнена задача: ":"Задача возвращена в работу: ")+task.title);$("notice").textContent="Статус задачи обновлён."}}if(button.dataset.action==="delete"&&project)askDelete("Удалить проект?","Проект «"+project.name+"» и его задачи будут удалены.",()=>{projects=projects.filter(p=>p.id!==project.id);save();render();logActivity("Удалён проект: "+project.name);$("notice").textContent="Проект удалён."});});
 render();renderProfile();renderTeams();renderActivity();
+
+function makeBackup(){
+return {app:"KORRI ONE",version:1,createdAt:new Date().toISOString(),projects,teams,profile,activity};
+}
+function downloadBackup(){
+try{
+const data=JSON.stringify(makeBackup(),null,2);
+const blob=new Blob([data],{type:"application/json"});
+const url=URL.createObjectURL(blob);
+const link=document.createElement("a");
+link.href=url;
+link.download="korri-one-backup-"+new Date().toISOString().slice(0,10)+".json";
+document.body.appendChild(link);link.click();link.remove();URL.revokeObjectURL(url);
+$("notice").textContent="Резервная копия подготовлена и скачана.";
+}catch{$("notice").textContent="Не удалось создать копию. Проверь свободное место на устройстве."}
+}
+function restoreBackupFile(file){
+if(!file)return;
+if(file.size>5*1024*1024){$("notice").textContent="Файл слишком большой. Максимальный размер — 5 МБ.";return}
+const reader=new FileReader();
+reader.onload=()=>{
+let data;
+try{data=JSON.parse(String(reader.result||""))}catch{$("notice").textContent="Не удалось прочитать файл: это не корректный JSON.";return}
+if(!data||data.app!=="KORRI ONE"||data.version!==1||!Array.isArray(data.projects)||!Array.isArray(data.teams)||!Array.isArray(data.activity)||!("profile" in data)){
+$("notice").textContent="Файл не похож на резервную копию KORRI ONE или его версия не поддерживается.";return}
+showForm("Восстановить резервную копию","Будут заменены текущие проекты, команды, профиль и история активности. Сначала скачай текущую копию, если хочешь сохранить обе версии.",[{name:"confirm",label:"Напиши ВОССТАНОВИТЬ для подтверждения",required:true,maxlength:20,placeholder:"ВОССТАНОВИТЬ"}],"Заменить данные",d=>{
+if(d.confirm!=="ВОССТАНОВИТЬ"){$("notice").textContent="Подтверждение не совпало. Восстановление отменено.";return false}
+projects=data.projects;teams=data.teams;profile=data.profile;activity=data.activity;
+try{
+localStorage.setItem(KEY,JSON.stringify(projects));
+localStorage.setItem(TEAM_KEY,JSON.stringify(teams));
+localStorage.setItem(PROFILE_KEY,JSON.stringify(profile));
+localStorage.setItem(ACTIVITY_KEY,JSON.stringify(activity));
+}catch{$("notice").textContent="Не удалось сохранить восстановленные данные. Проверь память браузера.";return false}
+location.reload();
+});
+};
+reader.onerror=()=>{$("notice").textContent="Не удалось открыть файл резервной копии."};
+reader.readAsText(file);
+}
+$("exportBackupBtn").addEventListener("click",downloadBackup);
+$("importBackupBtn").addEventListener("click",()=>$("backupFileInput").click());
+$("backupFileInput").addEventListener("change",event=>{restoreBackupFile(event.target.files&&event.target.files[0]);event.target.value=""});
 </script>
 </body>
 </html>
