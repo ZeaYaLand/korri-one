@@ -24,7 +24,7 @@ button:hover{filter:brightness(1.15)}
 .stat{background:#11101a;border:1px solid var(--border);border-radius:12px;padding:15px 20px;flex:1;min-width:110px}
 .stat strong{display:block;font-size:25px;margin-bottom:5px}.stat small{color:var(--muted)}
 .section-title{display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap}.search{width:100%;max-width:300px;background:#11101a;border:1px solid var(--border);border-radius:10px;padding:11px 12px;color:var(--text);font-size:14px}.task-list{display:grid;gap:7px;margin-top:14px}.task-row{display:flex;align-items:flex-start;gap:8px;padding:8px;border-radius:8px;background:#0d0c14;font-size:12px;line-height:1.4}.task-row button{padding:3px 7px;font-size:11px;flex-shrink:0}.task-row .task-name{overflow-wrap:anywhere;flex:1}.task-row.done .task-name{color:var(--muted);text-decoration:line-through}.danger{border-color:#633047;color:#ffb4ca}.project-buttons button{flex:1}
-.section-title h2{font-size:20px}.panel{background:#11101a;border:1px solid var(--border);border-radius:15px;padding:18px;margin:28px 0}.panel-head{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap}.panel h2{font-size:20px;margin:0}.profile-line{color:var(--muted);font-size:14px;line-height:1.5;margin:12px 0}.teams{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:12px;margin-top:14px}.team{border:1px solid var(--border);border-radius:12px;padding:14px;background:#0d0c14}.team h3{margin:0 0 8px}.team p{color:var(--muted);font-size:13px;line-height:1.5}.team small{color:#c4a4ff}.field{display:block;width:100%;margin:8px 0 12px;padding:11px 12px;background:#0d0c14;border:1px solid var(--border);border-radius:9px;color:var(--text);font:inherit}.field-label{font-size:13px;color:#c4a4ff}
+.section-title h2{font-size:20px}.panel{background:#11101a;border:1px solid var(--border);border-radius:15px;padding:18px;margin:28px 0}.panel-head{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap}.panel h2{font-size:20px;margin:0}.profile-line{color:var(--muted);font-size:14px;line-height:1.5;margin:12px 0}.activity-list{display:grid;gap:8px;margin-top:14px}.activity-item{display:flex;gap:10px;align-items:flex-start;padding:10px 12px;background:#0d0c14;border:1px solid var(--border);border-radius:10px}.activity-dot{width:8px;height:8px;flex-shrink:0;border-radius:50%;background:var(--purple);margin-top:5px}.activity-text{font-size:13px;line-height:1.45;overflow-wrap:anywhere}.activity-time{display:block;color:var(--muted);font-size:11px;margin-top:4px}.teams{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:12px;margin-top:14px}.team{border:1px solid var(--border);border-radius:12px;padding:14px;background:#0d0c14}.team h3{margin:0 0 8px}.team p{color:var(--muted);font-size:13px;line-height:1.5}.team small{color:#c4a4ff}.field{display:block;width:100%;margin:8px 0 12px;padding:11px 12px;background:#0d0c14;border:1px solid var(--border);border-radius:9px;color:var(--text);font:inherit}.field-label{font-size:13px;color:#c4a4ff}
 .projects{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:14px}
 .project{background:linear-gradient(145deg,#171322,#0e0d15);border:1px solid var(--border);border-radius:15px;padding:18px;min-width:0}
 .project h3{margin:12px 0 8px;overflow-wrap:anywhere}
@@ -53,18 +53,20 @@ footer{padding:25px;text-align:center;color:#777188;font-size:12px;border-top:1p
 <div class="stat"><strong id="doneCount">0</strong><small>Выполнено</small></div>
 </div>
 <div class="section-title"><h2>Твои проекты</h2><span class="tag">МОЯ ВСЕЛЕННАЯ</span><input class="search" id="searchInput" type="search" placeholder="Поиск по проектам…" aria-label="Поиск по проектам"></div>
-<div class="projects" id="projects"></div><section class="panel"><div class="panel-head"><h2>Команды</h2><button id="createTeamBtn" class="primary">＋ Создать команду</button></div><p class="profile-line">Объединяй людей вокруг общей идеи. Сейчас команды работают в демо-режиме на этом устройстве.</p><div class="teams" id="teams"></div></section><div id="notice" role="status"></div>
+<div class="projects" id="projects"></div><section class="panel"><div class="panel-head"><h2>Команды</h2><button id="createTeamBtn" class="primary">＋ Создать команду</button></div><p class="profile-line">Объединяй людей вокруг общей идеи. Сейчас команды работают в демо-режиме на этом устройстве.</p><div class="teams" id="teams"></div></section><section class="panel"><div class="panel-head"><h2>История активности</h2><button id="clearActivityBtn">Очистить историю</button></div><p class="profile-line">Здесь отображаются последние действия в этом браузере.</p><div class="activity-list" id="activityList"></div></section><div id="notice" role="status"></div>
 </main>
 <footer>KORRI ONE © 2026 · Создано для больших идей</footer>
 <script>
 const KEY="korri-one-projects-v1";
 const PROFILE_KEY="korri-one-profile-v1";
 const TEAM_KEY="korri-one-teams-v1";
+const ACTIVITY_KEY="korri-one-activity-v1";
 const $=id=>document.getElementById(id);
-let projects=[], teams=[], profile=null;
+let projects=[], teams=[], profile=null, activity=[];
 try{projects=JSON.parse(localStorage.getItem(KEY)||"[]");if(!Array.isArray(projects))projects=[]}catch{projects=[]}
 try{teams=JSON.parse(localStorage.getItem(TEAM_KEY)||"[]");if(!Array.isArray(teams))teams=[]}catch{teams=[]}
 try{profile=JSON.parse(localStorage.getItem(PROFILE_KEY)||"null")}catch{profile=null}
+try{activity=JSON.parse(localStorage.getItem(ACTIVITY_KEY)||"[]");if(!Array.isArray(activity))activity=[]}catch{activity=[]}
 function save(){try{localStorage.setItem(KEY,JSON.stringify(projects));return true}catch{$("notice").textContent="Не удалось сохранить данные в этом браузере.";return false}}
 function escapeHTML(value){return String(value).replace(/[&<>"']/g,char=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[char]))}
 function render(){
@@ -77,6 +79,17 @@ const visible=projects.filter(p=>[p.name,p.description,p.category].join(" ").toL
 if(!visible.length){$("projects").innerHTML='<div class="empty">Ничего не найдено. Попробуй другой запрос.</div>';return}
 $("projects").innerHTML=visible.map(p=>{const done=p.tasks.filter(t=>t.done).length;const tasks=p.tasks.length?p.tasks.slice(0,3).map(t=>`<div class="task-row ${t.done?"done":""}"><button data-action="toggle" data-id="${p.id}" data-task="${t.id}" aria-label="Изменить статус задачи">${t.done?"✓":"○"}</button><span class="task-name">${escapeHTML(t.title)}</span></div>`).join(""):'<small>Задач пока нет — добавь первую.</small>';return `<article class="project"><div class="project-top"><span class="pill">${escapeHTML(p.category)}</span><small>${done}/${p.tasks.length} задач</small></div><h3>${escapeHTML(p.name)}</h3><p>${escapeHTML(p.description||"Автор пока не добавил описание.")}</p><div class="task-list">${tasks}${p.tasks.length>3?'<small>И ещё '+(p.tasks.length-3)+' задач…</small>':""}</div><div class="project-buttons"><button data-action="task" data-id="${p.id}">＋ Задача</button><button class="danger" data-action="delete" data-id="${p.id}">Удалить</button></div></article>`}).join("")
 }
+function logActivity(message){
+activity.unshift({id:Date.now().toString()+Math.random().toString(16).slice(2),message:String(message).slice(0,180),time:new Date().toISOString()});
+activity=activity.slice(0,40);
+try{localStorage.setItem(ACTIVITY_KEY,JSON.stringify(activity))}catch{}
+renderActivity();
+}
+function renderActivity(){
+if(!activity.length){$("activityList").innerHTML='<div class="empty">История пока пуста. Создай проект, задачу или команду.</div>';return}
+$("activityList").innerHTML=activity.map(item=>{const d=new Date(item.time);const date=Number.isNaN(d.getTime())?"":d.toLocaleString("ru-RU",{day:"2-digit",month:"short",hour:"2-digit",minute:"2-digit"});return `<div class="activity-item"><span class="activity-dot"></span><div class="activity-text">${escapeHTML(item.message)}<span class="activity-time">${escapeHTML(date)}</span></div></div>`}).join("");
+}
+$("clearActivityBtn").addEventListener("click",()=>{if(!activity.length)return;if(confirm("Очистить историю активности на этом устройстве?")){activity=[];try{localStorage.setItem(ACTIVITY_KEY,"[]")}catch{}renderActivity();$("notice").textContent="История очищена."}});
 function renderProfile(){
 $("profileSummary").textContent=profile?profile.displayName+(profile.username?" · @"+profile.username:"")+(profile.bio?" — "+profile.bio:""):"Создай демо-профиль, чтобы подготовить пространство участника.";
 }
@@ -90,35 +103,35 @@ const displayName=prompt("Как тебя показывать в KORRI ONE?",pr
 const username=prompt("Придумай имя пользователя без @ (необязательно):",profile?.username||"")||"";
 const bio=prompt("Коротко о себе и своих интересах (необязательно):",profile?.bio||"")||"";
 profile={displayName:displayName.trim().slice(0,50),username:username.trim().replace(/^@/,"").slice(0,30),bio:bio.trim().slice(0,180)};
-try{localStorage.setItem(PROFILE_KEY,JSON.stringify(profile));renderProfile();$("notice").textContent="Демо-профиль сохранён на этом устройстве."}catch{$("notice").textContent="Не удалось сохранить профиль в браузере."}
+try{localStorage.setItem(PROFILE_KEY,JSON.stringify(profile));renderProfile();logActivity("Обновлён профиль участника: "+profile.displayName);$("notice").textContent="Демо-профиль сохранён на этом устройстве."}catch{$("notice").textContent="Не удалось сохранить профиль в браузере."}
 });
 $("createTeamBtn").addEventListener("click",()=>{
 const name=prompt("Название команды:");if(name===null)return;if(!name.trim()){alert("Введи название команды.");return}
 const description=prompt("Какая цель у команды?")||"";
 const starter=profile?.displayName?[profile.displayName]:[];
 teams.unshift({id:Date.now().toString()+Math.random().toString(16).slice(2),name:name.trim().slice(0,60),description:description.trim().slice(0,240),members:starter});
-saveTeams();renderTeams();$("notice").textContent="Демо-команда создана."
+saveTeams();renderTeams();logActivity("Создана команда: "+name.trim());$("notice").textContent="Демо-команда создана."
 });
 $("teams").addEventListener("click",event=>{
 const button=event.target.closest("button[data-team-action]");if(!button)return;
 const team=teams.find(t=>t.id===button.dataset.id);if(!team)return;
 if(button.dataset.teamAction==="member"){
 const member=prompt("Имя участника для демонстрационного списка:");if(member===null||!member.trim())return;
-team.members.push(member.trim().slice(0,50));saveTeams();renderTeams();$("notice").textContent="Участник добавлен в демо-список."
+team.members.push(member.trim().slice(0,50));saveTeams();renderTeams();logActivity("Добавлен участник "+member.trim()+" в команду "+team.name);$("notice").textContent="Участник добавлен в демо-список."
 }
-if(button.dataset.teamAction==="delete"&&confirm("Удалить команду «"+team.name+"»?")){teams=teams.filter(t=>t.id!==team.id);saveTeams();renderTeams();$("notice").textContent="Команда удалена."}
+if(button.dataset.teamAction==="delete"&&confirm("Удалить команду «"+team.name+"»?")){teams=teams.filter(t=>t.id!==team.id);saveTeams();renderTeams();logActivity("Удалена команда: "+team.name);$("notice").textContent="Команда удалена."}
 });
 function createProject(){
 const name=prompt("Как называется проект?");if(name===null)return;if(!name.trim()){alert("Введи название проекта.");return}
 const description=prompt("Коротко опиши идею проекта:")||"";
 const category=prompt("Категория проекта:","Мой проект")||"Мой проект";
 projects.unshift({id:Date.now().toString()+Math.random().toString(16).slice(2),name:name.trim().slice(0,80),description:description.trim().slice(0,300),category:category.trim().slice(0,30)||"Мой проект",tasks:[]});
-save();render();$("notice").textContent="Проект добавлен."
+save();render();logActivity("Создан проект: "+name.trim());$("notice").textContent="Проект добавлен."
 }
 function addTask(id){
 const project=projects.find(p=>p.id===id);if(!project)return;
 const title=prompt("Что нужно сделать?");if(title===null||!title.trim())return;
-project.tasks.push({id:Date.now().toString(),title:title.trim().slice(0,120),done:false});save();render();$("notice").textContent="Задача добавлена."
+project.tasks.push({id:Date.now().toString(),title:title.trim().slice(0,120),done:false});save();render();logActivity("Добавлена задача в проект "+project.name+": "+title.trim());$("notice").textContent="Задача добавлена."
 }
 function viewTasks(id){
 const project=projects.find(p=>p.id===id);if(!project)return;
@@ -139,8 +152,8 @@ projects.push(...fresh);
 save();render();$("notice").textContent="Демо-проекты добавлены."
 });
 $("searchInput").addEventListener("input",render);
-$("projects").addEventListener("click",event=>{const button=event.target.closest("button[data-action]");if(!button)return;const project=projects.find(p=>p.id===button.dataset.id);if(button.dataset.action==="task")addTask(button.dataset.id);if(button.dataset.action==="toggle"&&project){const task=project.tasks.find(t=>t.id===button.dataset.task);if(task){task.done=!task.done;save();render();$("notice").textContent="Статус задачи обновлён."}}if(button.dataset.action==="delete"&&project&&confirm("Удалить проект «"+project.name+"» вместе со всеми задачами?")){projects=projects.filter(p=>p.id!==project.id);save();render();$("notice").textContent="Проект удалён."}});
-render();renderProfile();renderTeams();
+$("projects").addEventListener("click",event=>{const button=event.target.closest("button[data-action]");if(!button)return;const project=projects.find(p=>p.id===button.dataset.id);if(button.dataset.action==="task")addTask(button.dataset.id);if(button.dataset.action==="toggle"&&project){const task=project.tasks.find(t=>t.id===button.dataset.task);if(task){task.done=!task.done;save();render();logActivity((task.done?"Выполнена задача: ":"Задача возвращена в работу: ")+task.title);$("notice").textContent="Статус задачи обновлён."}}if(button.dataset.action==="delete"&&project&&confirm("Удалить проект «"+project.name+"» вместе со всеми задачами?")){projects=projects.filter(p=>p.id!==project.id);save();render();logActivity("Удалён проект: "+project.name);$("notice").textContent="Проект удалён."}});
+render();renderProfile();renderTeams();renderActivity();
 </script>
 </body>
 </html>
