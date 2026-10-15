@@ -96,7 +96,16 @@ $("profileSummary").textContent=profile?profile.displayName+(profile.username?" 
 function saveTeams(){try{localStorage.setItem(TEAM_KEY,JSON.stringify(teams));return true}catch{$("notice").textContent="Не удалось сохранить команды в этом браузере.";return false}}
 function renderTeams(){
 if(!teams.length){$("teams").innerHTML='<div class="empty">Команд пока нет. Создай первую и опиши её цель.</div>';return}
-$("teams").innerHTML=teams.map(t=>`<article class="team"><small>КОМАНДА</small><h3>${escapeHTML(t.name)}</h3><p>${escapeHTML(t.description||"Цель команды пока не указана.")}</p><small>${t.members.length} участник(ов)</small><div class="project-buttons"><button data-team-action="member" data-id="${t.id}">＋ Участник</button><button class="danger" data-team-action="delete" data-id="${t.id}">Удалить</button></div><p>${t.members.map(escapeHTML).join(", ")||"Список участников пуст"}</p></article>`).join("");
+$("teams").innerHTML=teams.map(t=>{
+if(!Array.isArray(t.members))t.members=[];
+t.members=t.members.map(m=>typeof m==="string"?{name:m,role:"member"}:({...m,role:m.role||"member"}));
+const owner=t.members.find(m=>m.role==="owner");
+if(!owner&&t.members.length)t.members[0].role="owner";
+const canManage=t.members.some(m=>m.role==="owner"||m.role==="admin");
+const roleNames={owner:"Владелец",admin:"Администратор",member:"Участник",viewer:"Наблюдатель"};
+const memberRows=t.members.map((m,i)=>`<div class="task-row"><span class="task-name">${escapeHTML(m.name)} <span class="meta-chip">${roleNames[m.role]||"Участник"}</span></span>${canManage&&m.role!=="owner"?`<button data-team-action="role" data-id="${t.id}" data-member="${i}">Роль</button><button class="danger" data-team-action="remove" data-id="${t.id}" data-member="${i}">×</button>`:""}</div>`).join("");
+return `<article class="team"><small>КОМАНДА</small><h3>${escapeHTML(t.name)}</h3><p>${escapeHTML(t.description||"Цель команды пока не указана.")}</p><small>${t.members.length} участник(ов) · ${canManage?"Управление доступно":"Только просмотр списка"}</small><div class="project-buttons">${canManage?`<button data-team-action="member" data-id="${t.id}">＋ Пригласить участника</button><button class="danger" data-team-action="delete" data-id="${t.id}">Удалить команду</button>`:""}</div><div class="task-list">${memberRows||"Список участников пуст"}</div><p><small>Демо-режим: приглашения и роли пока действуют только в этом браузере.</small></p></article>`
+}).join("");
 }
 $("profileBtn").addEventListener("click",()=>{
 const displayName=prompt("Как тебя показывать в KORRI ONE?",profile?.displayName||"");if(displayName===null)return;if(!displayName.trim()){alert("Укажи отображаемое имя.");return}
@@ -108,18 +117,34 @@ try{localStorage.setItem(PROFILE_KEY,JSON.stringify(profile));renderProfile();lo
 $("createTeamBtn").addEventListener("click",()=>{
 const name=prompt("Название команды:");if(name===null)return;if(!name.trim()){alert("Введи название команды.");return}
 const description=prompt("Какая цель у команды?")||"";
-const starter=profile?.displayName?[profile.displayName]:[];
+const starter=[{name:profile?.displayName||"Ты (владелец)",role:"owner"}];
 teams.unshift({id:Date.now().toString()+Math.random().toString(16).slice(2),name:name.trim().slice(0,60),description:description.trim().slice(0,240),members:starter});
 saveTeams();renderTeams();logActivity("Создана команда: "+name.trim());$("notice").textContent="Демо-команда создана."
 });
 $("teams").addEventListener("click",event=>{
 const button=event.target.closest("button[data-team-action]");if(!button)return;
 const team=teams.find(t=>t.id===button.dataset.id);if(!team)return;
-if(button.dataset.teamAction==="member"){
-const member=prompt("Имя участника для демонстрационного списка:");if(member===null||!member.trim())return;
-team.members.push(member.trim().slice(0,50));saveTeams();renderTeams();logActivity("Добавлен участник "+member.trim()+" в команду "+team.name);$("notice").textContent="Участник добавлен в демо-список."
+if(!Array.isArray(team.members))team.members=[];
+team.members=team.members.map(m=>typeof m==="string"?{name:m,role:"member"}:m);
+const canManage=team.members.some(m=>m.role==="owner"||m.role==="admin");
+if(button.dataset.teamAction==="member"&&canManage){
+const member=prompt("Имя участника для демо-приглашения:");if(member===null||!member.trim())return;
+if(team.members.some(m=>m.name.toLowerCase()===member.trim().toLowerCase())){alert("Этот участник уже есть в команде.");return}
+const roleAnswer=prompt("Роль: 1 — участник, 2 — наблюдатель, 3 — администратор","1");if(roleAnswer===null)return;
+const role=({"1":"member","2":"viewer","3":"admin"})[roleAnswer.trim()];if(!role){alert("Выбери 1, 2 или 3.");return}
+team.members.push({name:member.trim().slice(0,50),role});saveTeams();renderTeams();logActivity("Добавлен участник "+member.trim()+" в команду "+team.name+" ("+({member:"участник",viewer:"наблюдатель",admin:"администратор"})[role]+")");$("notice").textContent="Демо-приглашение добавлено в список команды."
 }
-if(button.dataset.teamAction==="delete"&&confirm("Удалить команду «"+team.name+"»?")){teams=teams.filter(t=>t.id!==team.id);saveTeams();renderTeams();logActivity("Удалена команда: "+team.name);$("notice").textContent="Команда удалена."}
+if(button.dataset.teamAction==="role"&&canManage){
+const index=Number(button.dataset.member),member=team.members[index];if(!member||member.role==="owner")return;
+const roleAnswer=prompt("Новая роль для "+member.name+": 1 — участник, 2 — наблюдатель, 3 — администратор",({"member":"1","viewer":"2","admin":"3"})[member.role]||"1");if(roleAnswer===null)return;
+const role=({"1":"member","2":"viewer","3":"admin"})[roleAnswer.trim()];if(!role){alert("Выбери 1, 2 или 3.");return}
+member.role=role;saveTeams();renderTeams();logActivity("Изменена роль "+member.name+" в команде "+team.name);$("notice").textContent="Роль участника обновлена."
+}
+if(button.dataset.teamAction==="remove"&&canManage){
+const index=Number(button.dataset.member),member=team.members[index];if(!member||member.role==="owner")return;
+if(confirm("Удалить "+member.name+" из команды?")){team.members.splice(index,1);saveTeams();renderTeams();logActivity("Удалён участник "+member.name+" из команды "+team.name);$("notice").textContent="Участник удалён из демо-команды."}
+}
+if(button.dataset.teamAction==="delete"&&canManage&&confirm("Удалить команду «"+team.name+"»?")){teams=teams.filter(t=>t.id!==team.id);saveTeams();renderTeams();logActivity("Удалена команда: "+team.name);$("notice").textContent="Команда удалена."}
 });
 function createProject(){
 const name=prompt("Как называется проект?");if(name===null)return;if(!name.trim()){alert("Введи название проекта.");return}
